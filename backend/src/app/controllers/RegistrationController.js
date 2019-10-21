@@ -4,6 +4,9 @@ import Registration from '../models/Registration';
 import Student from '../models/Student';
 import Plans from '../models/Plans';
 
+import Queue from '../../lib/Queue';
+import WelcomeStudent from '../../jobs/WelcomeStudent';
+
 class RegistrationController {
   async index(req, res) {
     const registration = await Registration.findAll({
@@ -47,14 +50,17 @@ class RegistrationController {
       return res.status(400).json({ error: 'Plan does not exist' });
     }
 
-    const registration = await Registration.create({
-      user_id: req.user_id,
-      student_id,
-      plan_id,
-      start_date,
-    });
+    await Queue.add(WelcomeStudent.key, { student });
+    return res.json(WelcomeStudent.key);
 
-    return res.json(registration);
+    // const registration = await Registration.create({
+    //   user_id: req.user_id,
+    //   student_id,
+    //   plan_id,
+    //   start_date,
+    // });
+
+    // return res.json(registration);
   }
 
   async update(req, res) {

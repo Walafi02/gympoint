@@ -5,14 +5,19 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/server",
+    "queue": "nodemon src/queue.js",
     "dev:debug": "nodemon --inspect src/server"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bee-queue": "^1.2.2",
     "date-fns": "^2.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.3.1",
+    "nodemailer-express-handlebars": "^3.1.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.19.7",
