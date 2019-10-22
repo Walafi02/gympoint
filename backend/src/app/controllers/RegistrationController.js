@@ -50,17 +50,18 @@ class RegistrationController {
       return res.status(400).json({ error: 'Plan does not exist' });
     }
 
-    await Queue.add(WelcomeStudent.key, { student });
-    return res.json(WelcomeStudent.key);
+    // return res.json(WelcomeStudent.key);
 
-    // const registration = await Registration.create({
-    //   user_id: req.user_id,
-    //   student_id,
-    //   plan_id,
-    //   start_date,
-    // });
+    const registration = await Registration.create({
+      user_id: req.user_id,
+      student_id,
+      plan_id,
+      start_date,
+    });
 
-    // return res.json(registration);
+    await Queue.add(WelcomeStudent.key, { student, plans, registration });
+
+    return res.json(registration);
   }
 
   async update(req, res) {

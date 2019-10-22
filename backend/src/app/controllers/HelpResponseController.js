@@ -1,6 +1,10 @@
 import * as Yup from 'yup';
 
+import Queue from '../../lib/Queue';
+
+import ResponseMessage from '../../jobs/ResponseMessage';
 import HelpOrder from '../models/HelpOrder';
+import Studant from '../models/Student';
 
 class HelpResponseController {
   async store(req, res) {
@@ -22,6 +26,10 @@ class HelpResponseController {
     /**
      * implementar aqui o envio de email para o estudante com a resposta
      */
+
+    const studant = await Studant.findByPk(helpOrderUpdated.student_id);
+
+    await Queue.add(ResponseMessage.key, { helpOrder, studant });
 
     return res.json(helpOrderUpdated);
   }
