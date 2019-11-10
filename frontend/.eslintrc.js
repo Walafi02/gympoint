@@ -40,11 +40,11 @@ module.exports = {
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-props-no-spreading": "off"
   },
-  // settings: {
-  //   "import/resolver": {
-  //     "babel-plugin-root-import": {
-  //       rootPathSuffix: "src"
-  //     },
-  //   },
-  // },
+  settings: {
+    "import/resolver": {
+      "babel-plugin-root-import": {
+        rootPathSuffix: "src"
+      },
+    },
+  },
 };

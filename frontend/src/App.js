@@ -1,5 +1,15 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
+import Routes from './routes';
+
+import GlobalStyles from './styles/global';
+import history from './services/history';
 
 export default function src() {
-  return <h1>ola mundo</h1>;
+  return (
+    <Router history={history}>
+      <Routes />;
+      <GlobalStyles />
+    </Router>
+  );
 }
