@@ -1,10 +1,13 @@
 import React from 'react';
-
+import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 
 import * as Yup from 'yup';
+import api from '~/services/api';
 
 import logo from '~/assets/logo.png';
+
+import { signInRequest } from '~/store/modules/auth/actions';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -14,8 +17,15 @@ const schema = Yup.object().shape({
 });
 
 export default function SignIn() {
-  function handleSubmit({ email, password }) {
-    console.log(email, password);
+  const dispatch = useDispatch();
+
+  async function handleSubmit({ email, password }) {
+    const response = await api.post('/session', {
+      email,
+      password,
+    });
+    console.tron.log(response.data);
+    // dispatch(signInRequest(email, password));
   }
 
   return (
@@ -27,6 +37,7 @@ export default function SignIn() {
           label="seu e-mail"
           name="email"
           type="email"
+          value="admin@gympoint.com"
           placeholder="exemplo@email.com"
         />
 
@@ -34,6 +45,7 @@ export default function SignIn() {
           label="sua senha"
           name="password"
           type="password"
+          value="123456"
           placeholder="********"
         />
 
