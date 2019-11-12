@@ -20,7 +20,7 @@ export default function RouteWrapper({
   }
 
   if (singed && !isPrivate) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/student" />;
   }
 
   const Layout = singed ? DefaultLayout : AuthLayout;

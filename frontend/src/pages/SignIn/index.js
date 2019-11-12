@@ -3,9 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 
 import * as Yup from 'yup';
-import api from '~/services/api';
 
-import logo from '~/assets/logo.png';
+import logo from '~/assets/gympoint.svg';
 
 import { signInRequest } from '~/store/modules/auth/actions';
 
@@ -20,8 +19,6 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   async function handleSubmit({ email, password }) {
-    // const response = await api.post('session');
-    // console.tron.log(response.data);
     dispatch(signInRequest(email, password));
   }
 
