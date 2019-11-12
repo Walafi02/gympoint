@@ -2,6 +2,9 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
+import history from '~/services/history';
+
+import { signInSuccess } from './actions';
 
 export function* signIn({ payload }) {
   try {
@@ -11,16 +14,30 @@ export function* signIn({ payload }) {
       email,
       password,
     });
-    console.tron.log(response.data);
 
-    const { token } = response.data;
-    console.tron.log(token);
+    const { token, user } = response.data;
+
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
+    yield put(signInSuccess(token, user));
+
+    history.push('/dashboard');
   } catch (error) {
     toast.error('Falha na autenticação, verifique seus dados.');
   }
 }
 
+export function setToken({ payload }) {
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
 export default all([
-  // takeLatest('persist/REHYDRATE', setToken), // aaction lancada quando se tem um update de pagina
+  takeLatest('persist/REHYDRATE', setToken), // aaction lancada quando se tem um update de pagina
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
 ]);

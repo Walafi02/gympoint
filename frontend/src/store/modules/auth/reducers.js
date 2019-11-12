@@ -7,34 +7,32 @@ const INITIAL_STATE = {
 };
 
 export default function auth(state = INITIAL_STATE, action) {
-  // console.tron.log('entrou no reducer');
-  // return produce(state, draft => {
-  switch (action.type) {
-    //     case '@auth/SIGN_IN_REQUEST': {
-    //       draft.loading = true;
-    //       break;
-    //     }
+  return produce(state, draft => {
+    switch (action.type) {
+      case '@auth/SIGN_IN_REQUEST': {
+        draft.loading = true;
+        break;
+      }
 
-    //     case '@auth/SIGN_IN_SUCCESS': {
-    //       draft.token = action.payload.token;
-    //       draft.singed = true;
-    //       draft.loading = false;
-    //       break;
-    //     }
+      case '@auth/SIGN_IN_SUCCESS': {
+        draft.token = action.payload.token;
+        draft.singed = true;
+        draft.loading = false;
+        break;
+      }
 
-    //     case '@auth/SIGN_IN_FAILURE': {
-    //       draft.loading = false;
-    //       break;
-    //     }
+      case '@auth/SIGN_IN_FAILURE': {
+        draft.loading = false;
+        break;
+      }
 
-    //     case '@auth/SIGN_OUT': {
-    //       draft.token = null;
-    //       draft.singed = false;
-    //       break;
-    //     }
+      //     case '@auth/SIGN_OUT': {
+      //       draft.token = null;
+      //       draft.singed = false;
+      //       break;
+      //     }
 
-    default:
-      return state;
-  }
-  // });
+      default:
+    }
+  });
 }

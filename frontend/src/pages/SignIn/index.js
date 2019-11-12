@@ -20,12 +20,9 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   async function handleSubmit({ email, password }) {
-    const response = await api.post('/session', {
-      email,
-      password,
-    });
-    console.tron.log(response.data);
-    // dispatch(signInRequest(email, password));
+    // const response = await api.post('session');
+    // console.tron.log(response.data);
+    dispatch(signInRequest(email, password));
   }
 
   return (
