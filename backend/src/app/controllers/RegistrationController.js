@@ -13,6 +13,7 @@ class RegistrationController {
       where: {
         user_id: req.user_id,
       },
+      attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
     });
     return res.json(registration);
   }
