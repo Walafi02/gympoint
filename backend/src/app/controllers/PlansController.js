@@ -6,13 +6,20 @@ class PlansController {
   async index(req, res) {
     const { page = 1 } = req.query;
 
-    const plans = await Plans.findAll({
-      where: {
-        user_id: req.user_id,
-      },
-      limit: 20,
-      offset: (page - 1) * 20,
-    });
+    const { id } = req.params;
+
+    const plans = id
+      ? await Plans.findByPk(id)
+      : await Plans.findAll({
+          where: {
+            user_id: req.user_id,
+          },
+          limit: 20,
+          offset: (page - 1) * 20,
+        });
+
+    if (id && plans == null)
+      return res.status(401).json({ error: 'ID not found' });
 
     return res.json(plans);
   }

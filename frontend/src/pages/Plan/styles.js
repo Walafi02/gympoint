@@ -17,7 +17,7 @@ export const HeaderPlan = styled.div`
     color: #444444;
   }
 
-  button {
+  a {
     font-family: Roboto-Bold;
     font-size: 14px;
     color: #ffffff;
@@ -46,13 +46,17 @@ export const TablePlans = styled.table`
   background: #fff;
   border-radius: 4px;
 
+  tr {
+    display: grid;
+    grid-template-columns: 6fr 3fr 3fr 1fr 1fr;
+  }
+
   thead th {
     text-align: left;
     padding: 12px;
 
     + th {
       text-align: center;
-      /* background: red; */
     }
   }
 
@@ -63,10 +67,10 @@ export const TablePlans = styled.table`
     + td {
       text-align: center;
     }
+  }
 
-    /* &.align-right {
-      text-align: right;
-    } */
+  tbody tr:hover {
+    background: #f5f5f5;
   }
 
   button {
