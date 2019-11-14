@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
-import { Link } from 'react-router-dom';
 
 import history from '~/services/history';
 import api from '~/services/api';
 import { formatPrice } from '~/util/format';
 
-import { Container, HeaderPlan, TablePlans } from './styles';
+import { Container, TablePlans } from './styles';
+
+import Header from '~/components/HeaderView';
+import ButtonLink from '~/components/ButtonLink';
 
 export default function Plan() {
   const [plans, setPlans] = useState([]);
@@ -39,13 +41,15 @@ export default function Plan() {
 
   return (
     <Container>
-      <HeaderPlan>
+      <Header>
         <strong>Gerenciando Planos</strong>
 
-        <Link to="/plan/create">
-          <MdAdd size={24} color="#fff" /> CADASTRAR
-        </Link>
-      </HeaderPlan>
+        <div>
+          <ButtonLink to="/plan/create" background="#ee4d64">
+            <MdAdd size={24} color="#fff" /> CADASTRAR
+          </ButtonLink>
+        </div>
+      </Header>
 
       <TablePlans>
         <thead>
