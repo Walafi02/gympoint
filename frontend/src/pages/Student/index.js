@@ -2,11 +2,13 @@ import React from 'react';
 // import { Link } from 'react-router-dom';
 import { MdAdd, MdSearch } from 'react-icons/md';
 
-import { Container } from './styles';
 import Header from '~/components/HeaderView';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
 import SearchBar from '~/components/SearchBar';
+import Container from '~/components/Container';
+
+// import { Container } from './styles';
 
 export default function Student() {
   async function handleSearchUser(e) {

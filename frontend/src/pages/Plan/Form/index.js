@@ -10,10 +10,12 @@ import { formatPrice } from '~/util/format';
 
 import HeaderView from '~/components/HeaderView';
 import Button from '~/components/Button';
+import Container from '~/components/Container';
+import Field from '~/components/Field';
 
 import api from '~/services/api';
 
-import { Container, BodyForm, Field } from './styles';
+import { BodyForm } from './styles';
 
 const schema = Yup.object().shape({
   title: Yup.string().required('O titulo é obrigatorio'),

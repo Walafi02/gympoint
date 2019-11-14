@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Header from '~/components/HeaderView';
-import Button from '~/components/Button';
 import Table from '~/components/Table';
-import { Container } from './styles';
+import Container from '~/components/Container';
+// import { Container } from './styles';
 
 export default function Help() {
   return (
-    <Container>
+    <Container maxWidth={600} minWidth={400}>
       <Header>
         <strong>Pedidos de auxílio</strong>
       </Header>

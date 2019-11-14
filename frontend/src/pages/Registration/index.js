@@ -2,15 +2,16 @@ import React from 'react';
 // import { Link } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 
-import { Container } from './styles';
+// import { Container } from './styles';
 
 import Header from '~/components/HeaderView';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
+import Container from '~/components/Container';
 
 export default function Registration() {
   return (
-    <Container>
+    <Container maxWidth={1000} minWidth={800}>
       <Header>
         <strong>Gerenciando matrículas</strong>
         <div>

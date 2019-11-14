@@ -6,11 +6,12 @@ import history from '~/services/history';
 import api from '~/services/api';
 import { formatPrice } from '~/util/format';
 
-import { Container } from './styles';
-
 import Header from '~/components/HeaderView';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
+import Container from '~/components/Container';
+
+// import { Container } from './styles';
 
 export default function Plan() {
   const [plans, setPlans] = useState([]);
