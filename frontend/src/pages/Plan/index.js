@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 import history from '~/services/history';
 import api from '~/services/api';
 import { formatPrice } from '~/util/format';
 
-import { Container, TablePlans } from './styles';
+import { Container } from './styles';
 
 import Header from '~/components/HeaderView';
-import ButtonLink from '~/components/ButtonLink';
+import Button from '~/components/Button';
+import Table from '~/components/Table';
 
 export default function Plan() {
   const [plans, setPlans] = useState([]);
@@ -25,7 +27,6 @@ export default function Plan() {
           formatPrice: formatPrice(plan.price),
         }))
       );
-      console.tron.log(response.data);
     }
 
     loadPlans();
@@ -43,15 +44,19 @@ export default function Plan() {
     <Container>
       <Header>
         <strong>Gerenciando Planos</strong>
-
         <div>
-          <ButtonLink to="/plan/create" background="#ee4d64">
-            <MdAdd size={24} color="#fff" /> CADASTRAR
-          </ButtonLink>
+          <Link to="/plan/create">
+            <Button
+              type="button"
+              text="CADASTRAR"
+              Icon={MdAdd}
+              styledType="primary"
+            />
+          </Link>
         </div>
       </Header>
 
-      <TablePlans>
+      <Table template="6fr 3fr 3fr 1fr 1fr">
         <thead>
           <tr>
             <th>TÍTULO</th>
@@ -89,7 +94,7 @@ export default function Plan() {
             </tr>
           ))}
         </tbody>
-      </TablePlans>
+      </Table>
     </Container>
   );
 }

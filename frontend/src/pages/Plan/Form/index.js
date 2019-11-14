@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+import { MdDone, MdKeyboardArrowLeft } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
-import { MdAdd } from 'react-icons/md';
+import history from '~/services/history';
+import { formatPrice } from '~/util/format';
 
 import HeaderView from '~/components/HeaderView';
 import Button from '~/components/Button';
-import ButtonLink from '~/components/ButtonLink';
 
 import api from '~/services/api';
 
@@ -27,59 +29,105 @@ export default function FormPlan({ match }) {
   const { id } = match.params;
   const [plan, setPlan] = useState({
     title: '',
+    duration: null,
+    price: null,
   });
+  const [total, setTotal] = useState(0);
 
-  async function getPlan() {
+  async function handleSubmit({ title, duration, price }) {
     try {
-      const response = await api.get(`/plans/${id}`);
-      setPlan(response.data);
-      // console.tron.log(response.data);
+      const response = id // eslint-disable-line
+        ? await api.put(`/plans/${id}`, { title, duration, price })
+        : await api.post('/plans', { title, duration, price });
+
+      toast.success('Plano salvo com sucesso');
+      history.push(`/plan`);
     } catch (error) {
-      // manda msg de error e volta para a tela anterior
+      toast.error('Error ao salvar o plano, verifique suas permissões');
     }
   }
 
-  async function handleSubmit({ title, duration, price }) {
-    console.tron.log({ title, duration, price });
+  function handleGoBack() {
+    history.push(`/plan`);
   }
 
   useEffect(() => {
+    async function getPlan() {
+      try {
+        const response = await api.get(`/plans/${id}`);
+        setPlan(response.data);
+      } catch (error) {
+        toast.error('Error ao buscar o plano, verifique suas permissões');
+        history.push(`/plan`);
+      }
+    }
     if (id) getPlan();
   }, []); // eslint-disable-line
+
+  useEffect(() => {
+    const totalPrice = formatPrice(
+      plan.duration === null || plan.price === null
+        ? 0
+        : plan.duration * plan.price
+    );
+    setTotal(totalPrice);
+  }, [plan]);
 
   return (
     <Container>
       <HeaderView>
-        <strong>titulo</strong>
+        <strong>Cadastro de plano</strong>
 
         <div>
-          <Button type="button" background="#ee4d64">
-            <MdAdd size={24} color="#fff" /> CADASTRAR
-          </Button>
-          <Button type="button">
-            <MdAdd size={24} color="#fff" /> Salvar
-          </Button>
+          <Button
+            type="button"
+            text="Voltar"
+            Icon={MdKeyboardArrowLeft}
+            onClick={handleGoBack}
+          />
+          <Button
+            type="submit"
+            form="planForm"
+            text="SALVAR"
+            Icon={MdDone}
+            styledType="primary"
+          />
         </div>
       </HeaderView>
 
       <BodyForm>
-        <Form onSubmit={handleSubmit} initialData={plan} schema={schema}>
-          <Field>
+        <Form
+          id="planForm"
+          onSubmit={handleSubmit}
+          initialData={plan}
+          schema={schema}
+        >
+          <Field classname="space-between">
             <Input label="TÍTULO DO PLANO" name="title" />
           </Field>
           <div>
             <Field>
-              <Input label="DURAÇÃO (em meses)" name="duration" type="number" />
+              <Input
+                label="DURAÇÃO (em meses)"
+                name="duration"
+                type="number"
+                min={0}
+                onChange={e => setPlan({ ...plan, duration: e.target.value })}
+              />
             </Field>
             <Field>
-              <Input label="PREÇO MENSAL" name="price" type="number" />
+              <Input
+                label="PREÇO MENSAL"
+                name="price"
+                type="number"
+                min={0}
+                onChange={e => setPlan({ ...plan, price: e.target.value })}
+              />
             </Field>
             <Field>
-              <Input label="PREÇO TOTAL" name="total" type="number" disabled />
+              <Input label="PREÇO TOTAL" name="total" disabled value={total} />
             </Field>
           </div>
-
-          {/* <button type="submit">Salvar</button> */}
         </Form>
       </BodyForm>
     </Container>

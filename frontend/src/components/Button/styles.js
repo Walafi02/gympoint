@@ -1,45 +1,31 @@
 import styled from 'styled-components';
 
 export const Btn = styled.button`
-  background: ${props => props.background};
+  background: ${props => (props.styledType === 'primary' ? '#ee4d64' : '#bbb')};
+  color: #fff;
 
-  /* font-family: Roboto-Bold;
+  font-family: Roboto-Bold sans-serif;
   font-size: 14px;
-  color: #ffffff;
   text-align: center;
   font-weight: bold;
-  padding: 4px 10px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
   border-radius: 4px;
-
+  padding: 6px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: opacity 1s;
 
   svg {
-    margin: 5px 7px 5px 5px;
+    margin: 0 10px 0 0;
+  }
+
+  span {
+    margin: 0;
   }
 
   &:hover {
-    opacity: 0.9;
-  } */
-
-  display: inline-block;
-  padding: 6px 12px;
-  /* margin-bottom: 0; */
-  font-size: 14px;
-
-  /* line-height: 1.42857143; */
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  /* background-image: none; */
-  border: 1px solid transparent;
-  border-radius: 4px;
+    opacity: 0.7;
+  }
 `;

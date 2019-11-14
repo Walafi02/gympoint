@@ -17,7 +17,7 @@ export default function Header() {
             <img src={logo} alt="gympointer" />
           </Link>
           <NavLink to="/student" activeClassName="selected">
-            Estudante
+            ALUNOS
           </NavLink>
           <NavLink to="/registration" activeClassName="selected">
             Matricula
@@ -26,7 +26,7 @@ export default function Header() {
             Planos
           </NavLink>
           <NavLink to="/help" activeClassName="selected">
-            Ajuda
+            PEDIDOS DE AUXÍLIO
           </NavLink>
         </nav>
 

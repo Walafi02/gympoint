@@ -10,6 +10,7 @@ export const Container = styled.div`
     font-family: Roboto-Bold;
     font-size: 24px;
     color: #444444;
+    padding: 6px 2px;
   }
 
   div {
