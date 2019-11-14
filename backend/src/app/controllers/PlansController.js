@@ -16,6 +16,7 @@ class PlansController {
           },
           limit: 20,
           offset: (page - 1) * 20,
+          order: ['id'],
         });
 
     if (id && plans == null)
