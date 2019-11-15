@@ -1,5 +1,5 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 
 // import { Container } from './styles';
@@ -9,20 +9,40 @@ import Button from '~/components/Button';
 import Table from '~/components/Table';
 import Container from '~/components/Container';
 
+import history from '~/services/history';
+import api from '~/services/api';
+
 export default function Registration() {
+  const [registrations, setRegistrations] = useState([]);
+  useEffect(() => {
+    async function loadRegistrations() {
+      const response = await api.get('registration');
+      console.tron.log(response.data);
+      setRegistrations(response.data);
+    }
+    loadRegistrations();
+  }, []);
+
+  function handleEdit(id) {
+    history.push(`/registration/edit/${id}`);
+  }
+
+  function handleDelete(id) {
+    console.tron.log(id);
+  }
   return (
     <Container maxWidth={1000} minWidth={800}>
       <Header>
         <strong>Gerenciando matrículas</strong>
         <div>
-          {/* <Link to="/plan/create"> */}
-          <Button
-            type="button"
-            text="CADASTRAR"
-            Icon={MdAdd}
-            styledType="primary"
-          />
-          {/* </Link> */}
+          <Link to="/registration/create">
+            <Button
+              type="button"
+              text="CADASTRAR"
+              Icon={MdAdd}
+              styledType="primary"
+            />
+          </Link>
         </div>
       </Header>
 
@@ -39,23 +59,33 @@ export default function Registration() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>walafi</td>
-            <td>start</td>
-            <td>12-12-2012</td>
-            <td>12-01-2013</td>
-            <td>sim</td>
-            <td className="align-right">
-              <button type="button" className="edit">
-                editar
-              </button>
-            </td>
-            <td className="align-right">
-              <button type="button" className="delete">
-                apagar
-              </button>
-            </td>
-          </tr>
+          {registrations.map(registration => (
+            <tr key={registration.id}>
+              <td>{registration.student.nome}</td>
+              <td>{registration.plan.title}</td>
+              <td>{registration.start_date}</td>
+              <td>{registration.end_date}</td>
+              <td>{registration.active ? 'sim' : 'não'}</td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  className="edit"
+                  onClick={() => handleEdit(registration.id)}
+                >
+                  editar
+                </button>
+              </td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  className="delete"
+                  onClick={() => handleDelete(registration.id)}
+                >
+                  apagar
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Container>

@@ -24,11 +24,17 @@ export const Container = styled.div`
     font-size: 12px;
   }
 
-  input {
+  input,
+  select {
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     height: 40px;
     padding: 7px 10px;
     font-size: 12px;
+  }
+
+  select {
+    background: #fff;
+    cursor: pointer;
   }
 `;
