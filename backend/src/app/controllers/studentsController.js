@@ -5,16 +5,30 @@ import Student from '../models/Student';
 class StudentsController {
   async index(req, res) {
     const { name } = req.query;
+    const { id } = req.params;
 
-    const users = await Student.findAll({
-      where: {
-        nome: {
-          [Op.iLike]: `%${name || ''}%`,
-        },
-      },
-    });
+    const students = id
+      ? await Student.findByPk(id)
+      : await Student.findAll({
+          where: {
+            nome: {
+              [Op.iLike]: `%${name || ''}%`,
+            },
+          },
+        });
 
-    return res.json(users);
+    // const users = await Student.findAll({
+    //   where: {
+    //     nome: {
+    //       [Op.iLike]: `%${name || ''}%`,
+    //     },
+    //   },
+    // });
+
+    if (id && students == null)
+      return res.status(401).json({ error: 'ID not found' });
+
+    return res.json(students);
   }
 
   async store(req, res) {

@@ -24,7 +24,7 @@ routes.use(authMiddleware);
 
 routes.post('/help-orders/:id_help_order/answer', helpResponseController.store);
 
-routes.get('/students', studentsController.index);
+routes.get('/students/:id?', studentsController.index);
 routes.post('/students', studentsController.store);
 routes.put('/students/:id_student', studentsController.update);
 
@@ -33,7 +33,7 @@ routes.post('/plans', plansController.store);
 routes.put('/plans/:id_plan', plansController.update);
 routes.delete('/plans/:id_plan', plansController.delete);
 
-routes.get('/registration', registrationController.index);
+routes.get('/registration/:id?', registrationController.index);
 routes.post('/registration', registrationController.store);
 routes.put('/registration/:id_registration', registrationController.update);
 routes.delete('/registration/:id_registration', registrationController.delete);

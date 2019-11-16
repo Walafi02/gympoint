@@ -9,12 +9,34 @@ import WelcomeStudent from '../../jobs/WelcomeStudent';
 
 class RegistrationController {
   async index(req, res) {
-    const registration = await Registration.findAll({
-      where: {
-        user_id: req.user_id,
-      },
-      attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
-    });
+    const { id } = req.params;
+
+    const registration = id
+      ? await Registration.findByPk(id, {
+          attributes: ['id', 'start_date', 'end_date', 'plan_id', 'student_id'],
+        })
+      : await Registration.findAll({
+          where: {
+            user_id: req.user_id,
+          },
+          attributes: ['id', 'start_date', 'end_date', 'active'],
+          include: [
+            {
+              model: Student,
+              as: 'student',
+              attributes: ['nome'],
+            },
+            {
+              model: Plans,
+              as: 'plan',
+              attributes: ['title'],
+            },
+          ],
+        });
+
+    // attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
+    if (id && registration == null)
+      return res.status(401).json({ error: 'ID not found' });
     return res.json(registration);
   }
 
