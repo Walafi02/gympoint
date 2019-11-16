@@ -12,10 +12,11 @@ import HeaderView from '~/components/HeaderView';
 import Button from '~/components/Button';
 import Container from '~/components/Container';
 import Field from '~/components/Field';
+import BodyForm from '~/components/BodyForm';
 
 import api from '~/services/api';
 
-import { BodyForm } from './styles';
+// import { BodyForm } from './styles';
 
 const schema = Yup.object().shape({
   title: Yup.string().required('O titulo é obrigatorio'),
