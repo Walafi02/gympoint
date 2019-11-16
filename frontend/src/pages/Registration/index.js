@@ -17,7 +17,6 @@ export default function Registration() {
   useEffect(() => {
     async function loadRegistrations() {
       const response = await api.get('registration');
-      console.tron.log(response.data);
       setRegistrations(response.data);
     }
     loadRegistrations();
@@ -61,7 +60,7 @@ export default function Registration() {
         <tbody>
           {registrations.map(registration => (
             <tr key={registration.id}>
-              <td>{registration.student.nome}</td>
+              <td>{registration.student.name}</td>
               <td>{registration.plan.title}</td>
               <td>{registration.start_date}</td>
               <td>{registration.end_date}</td>

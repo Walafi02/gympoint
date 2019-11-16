@@ -11,19 +11,11 @@ class StudentsController {
       ? await Student.findByPk(id)
       : await Student.findAll({
           where: {
-            nome: {
+            name: {
               [Op.iLike]: `%${name || ''}%`,
             },
           },
         });
-
-    // const users = await Student.findAll({
-    //   where: {
-    //     nome: {
-    //       [Op.iLike]: `%${name || ''}%`,
-    //     },
-    //   },
-    // });
 
     if (id && students == null)
       return res.status(401).json({ error: 'ID not found' });
@@ -33,13 +25,13 @@ class StudentsController {
 
   async store(req, res) {
     const schema = Yup.object().shape({
-      nome: Yup.string().required(),
+      name: Yup.string().required(),
       email: Yup.string()
         .email()
         .required(),
-      idade: Yup.number(),
-      peso: Yup.number(),
-      altura: Yup.number(),
+      age: Yup.number(),
+      weight: Yup.number(),
+      height: Yup.number(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -56,18 +48,18 @@ class StudentsController {
       return res.status(400).json({ error: 'Studant already exists.' });
     }
 
-    const { id, nome, email, idade, altura } = await Student.create(req.body);
+    const { id, name, email, age, height } = await Student.create(req.body);
 
-    return res.json({ id, nome, email, idade, altura });
+    return res.json({ id, name, email, age, height });
   }
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      nome: Yup.string(),
+      name: Yup.string(),
       email: Yup.string().email(),
-      idade: Yup.number(),
-      peso: Yup.number(),
-      altura: Yup.number(),
+      age: Yup.number(),
+      weight: Yup.number(),
+      height: Yup.number(),
     });
 
     if (!(await schema.isValid(req.body))) {

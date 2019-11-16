@@ -24,7 +24,7 @@ class RegistrationController {
             {
               model: Student,
               as: 'student',
-              attributes: ['nome'],
+              attributes: ['name'],
             },
             {
               model: Plans,
@@ -34,7 +34,6 @@ class RegistrationController {
           ],
         });
 
-    // attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
     if (id && registration == null)
       return res.status(401).json({ error: 'ID not found' });
     return res.json(registration);

@@ -79,7 +79,7 @@ export default function FormPlan({ match }) {
   return (
     <Container>
       <HeaderView>
-        <strong>Cadastro de plano</strong>
+        <strong>{id ? 'Edição' : 'Cadastro'} de plano</strong>
 
         <div>
           <Button

@@ -18,22 +18,22 @@ import BodyForm from '~/components/BodyForm';
 // import { Container } from './styles';
 
 const schema = Yup.object().shape({
-  nome: Yup.string().required('O nome é obrigatorio'),
+  name: Yup.string().required('O nome é obrigatorio'),
   email: Yup.string()
     .email('Insira um email valido')
     .required('O e-mail é obrigatorio'),
-  idade: Yup.number().typeError(),
-  peso: Yup.number().typeError(),
-  altura: Yup.number().typeError(),
+  age: Yup.number().typeError(),
+  weight: Yup.number().typeError(),
+  height: Yup.number().typeError(),
 });
 
 export default function StudentForm({ match }) {
   const [student, setStudent] = useState({
-    nome: '',
+    name: '',
     email: '',
-    idade: null,
-    altura: null,
-    peso: null,
+    age: null,
+    height: null,
+    weight: null,
   });
   const { id } = match.params;
 
@@ -97,20 +97,20 @@ export default function StudentForm({ match }) {
           schema={schema}
         >
           <Field>
-            <Input label="NOME COMPLETO" name="nome" />
+            <Input label="NOME COMPLETO" name="name" />
           </Field>
           <Field>
             <Input label="ENDEREÇO DE E-MAIL" name="email" type="email" />
           </Field>
           <div>
             <Field>
-              <Input label="IDADE" name="idade" type="number" />
+              <Input label="IDADE" name="age" type="number" />
             </Field>
             <Field>
-              <Input label="PESO (em kg)" name="peso" type="number" />
+              <Input label="PESO (em kg)" name="weight" type="number" />
             </Field>
             <Field>
-              <Input label="ALTURA" name="altura" type="number" />
+              <Input label="ALTURA" name="height" type="number" />
             </Field>
           </div>
         </Form>

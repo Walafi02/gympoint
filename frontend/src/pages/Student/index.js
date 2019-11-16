@@ -67,9 +67,9 @@ export default function Student() {
         <tbody>
           {students.map(student => (
             <tr>
-              <td>{student.nome}</td>
+              <td>{student.name}</td>
               <td>{student.email}</td>
-              <td>{student.idade || 'Não informado'}</td>
+              <td>{student.age || 'Não informado'}</td>
               <td className="align-right">
                 <button
                   type="button"

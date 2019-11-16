@@ -34,7 +34,7 @@ export default function RegistrationForm({ match }) {
   async function loadStudents() {
     const response = await api.get('students');
     setStudents(
-      response.data.map(student => ({ id: student.id, title: student.nome }))
+      response.data.map(student => ({ id: student.id, title: student.name }))
     );
   }
 
@@ -70,7 +70,7 @@ export default function RegistrationForm({ match }) {
   return (
     <Container>
       <Header>
-        <strong>Cadastro de matrícula</strong>
+        <strong>{id ? 'Edição' : 'Cadastro'} de matrícula</strong>
         <div>
           <Button
             type="button"
