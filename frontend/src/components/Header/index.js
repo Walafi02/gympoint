@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { singOut } from '~/store/modules/auth/actions';
 
@@ -9,6 +9,8 @@ import logo from '~/assets/logo-header.svg';
 
 export default function Header() {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+
   return (
     <Container>
       <Content>
@@ -32,7 +34,7 @@ export default function Header() {
 
         <aside>
           <Profile>
-            <strong>Walafi Ferreira</strong>
+            <strong title={`${user.name} - ${user.email}`}>{user.name}</strong>
             <button type="button" onClick={() => dispatch(singOut())}>
               sair do sistema
             </button>

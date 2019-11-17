@@ -15,7 +15,7 @@ export const Btn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 1s;
+  transition: opacity 0.1s;
 
   svg {
     margin: 0 10px 0 0;

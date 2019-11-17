@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd, MdSearch } from 'react-icons/md';
+import { toast } from 'react-toastify';
 import history from '~/services/history';
 
 import Header from '~/components/HeaderView';
@@ -34,8 +35,19 @@ export default function Student() {
     history.push(`/student/edit/${id}`);
   }
 
-  function handleDelete(id) {
-    console.tron.log(id);
+  async function handleDelete(id) {
+    const { name } = students.find(p => p.id === parseInt(id));
+    const r = window.confirm(`Deseja deletar ${name}?`);
+    if (r === true) {
+      try {
+        await api.delete(`/students/${id}`);
+        setStudents(students.filter(item => item.id !== id));
+
+        toast.success(`Sucesso ao deletar ${name}.`);
+      } catch (error) {
+        toast.error(`Error ao deletar studante.`);
+      }
+    }
   }
   return (
     <Container>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import history from '~/services/history';
 import api from '~/services/api';
@@ -37,8 +38,18 @@ export default function Plan() {
     history.push(`/plan/edit/${id}`);
   }
 
-  function handleDelete(id) {
-    console.tron.log(id);
+  async function handleDelete(id) {
+    const { title } = plans.find(item => item.id === id);
+    const r = window.confirm(`Deseja deletar o plano ${title}?`);
+    if (r === true) {
+      try {
+        await api.delete(`/plans/${id}`);
+        setPlans(plans.filter(item => item.id !== id));
+        toast.success(`Sucesso ao deleta o plano ${title}.`);
+      } catch (error) {
+        toast.error(`Error ao deletar plano.`);
+      }
+    }
   }
 
   return (

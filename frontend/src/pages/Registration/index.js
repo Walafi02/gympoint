@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd, MdCheckCircle } from 'react-icons/md';
+import { toast } from 'react-toastify';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-
-// import { Container } from './styles';
 
 import Header from '~/components/HeaderView';
 import Button from '~/components/Button';
@@ -46,8 +45,18 @@ export default function Registration() {
     history.push(`/registration/edit/${id}`);
   }
 
-  function handleDelete(id) {
-    console.tron.log(id);
+  async function handleDelete(id) {
+    const { student } = registrations.find(item => item.id === id);
+    const r = window.confirm(`Deseja deletar matricula para ${student.name}?`);
+    if (r === true) {
+      try {
+        await api.delete(`/registration/${id}`);
+        setRegistrations(registrations.filter(item => item.id !== id));
+        toast.success(`Sucesso deletar matricula para ${student.name}.`);
+      } catch (error) {
+        toast.error(`Error ao deletar matricula.`);
+      }
+    }
   }
   return (
     <Container maxWidth={1000} minWidth={800}>

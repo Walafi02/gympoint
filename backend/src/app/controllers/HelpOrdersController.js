@@ -5,17 +5,18 @@ import Student from '../models/Student';
 
 class HelpOrdersController {
   async index(req, res) {
-    const student = await Student.findByPk(req.params.id_student);
-
-    if (!student) {
-      return res.status(400).json({ error: 'Student not found' });
-    }
-
     const helpOrder = await HelpOrder.findAll({
       where: {
-        student_id: req.params.id_student,
         answer: null,
       },
+      attributes: ['id', 'question'],
+      include: [
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['name'],
+        },
+      ],
     });
 
     return res.json(helpOrder);

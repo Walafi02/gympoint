@@ -40,7 +40,9 @@ module.exports = {
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-props-no-spreading": "off",
     "jsx-a11y/control-has-associated-label": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-alert": "off",
+    "radix": "off"
   },
   settings: {
     "import/resolver": {
