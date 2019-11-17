@@ -20,11 +20,18 @@ import BodyForm from '~/components/BodyForm';
 const schema = Yup.object().shape({
   name: Yup.string().required('O nome é obrigatorio'),
   email: Yup.string()
-    .email('Insira um email valido')
-    .required('O e-mail é obrigatorio'),
-  age: Yup.number().typeError(),
-  weight: Yup.number().typeError(),
-  height: Yup.number().typeError(),
+    .email('E-mail inválido')
+    .required('Campo obrigatório'),
+  age: Yup.number()
+    .positive('Idade deve ser maior que zero')
+    .required('Campo obrigatório')
+    .typeError('Número inválido'),
+  weight: Yup.number()
+    .required('Campo obrigatório')
+    .typeError('Número inválido'),
+  height: Yup.number()
+    .required('Campo obrigatório')
+    .typeError('Número inválido'),
 });
 
 export default function StudentForm({ match }) {
@@ -55,16 +62,22 @@ export default function StudentForm({ match }) {
     history.push(`/student`);
   }
 
-  async function handleSubmit() {
-    console.tron.log('mandpou');
+  async function handleSubmit({ name, email, age, weight, height }) {
+    console.tron.log({
+      name,
+      email,
+      age,
+      weight,
+      height,
+    });
     try {
-      //   const response = id // eslint-disable-line
-      //     ? await api.put(`/plans/${id}`, { title, duration, price })
-      //     : await api.post('/plans', { title, duration, price });
-      // toast.success('Plano salvo com sucesso');
-      //   history.push(`/plan`);
+        const response = id // eslint-disable-line
+        ? await api.put(`/students/${id}`, { name, email, age, weight, height })
+        : await api.post('/students', { name, email, age, weight, height });
+      toast.success('Aluno salvo com sucesso');
+      history.push(`/student`);
     } catch (error) {
-      toast.error('Error ao salvar o plano, verifique suas permissões');
+      toast.error('Error ao salvar o aluno, verifique suas permissões');
     }
   }
 
@@ -110,7 +123,7 @@ export default function StudentForm({ match }) {
               <Input label="PESO (em kg)" name="weight" type="number" />
             </Field>
             <Field>
-              <Input label="ALTURA" name="height" type="number" />
+              <Input step="0.01" label="ALTURA" name="height" type="number" />
             </Field>
           </div>
         </Form>

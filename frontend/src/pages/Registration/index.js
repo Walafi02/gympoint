@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdCheckCircle } from 'react-icons/md';
+import { format, parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
 // import { Container } from './styles';
 
@@ -17,7 +19,25 @@ export default function Registration() {
   useEffect(() => {
     async function loadRegistrations() {
       const response = await api.get('registration');
-      setRegistrations(response.data);
+      setRegistrations(
+        response.data.map(reg => ({
+          ...reg,
+          format_start_date: format(
+            parseISO(reg.start_date),
+            "d 'de' MMMM 'de' yyyy",
+            {
+              locale: pt,
+            }
+          ),
+          format_end_date: format(
+            parseISO(reg.end_date),
+            "d 'de' MMMM 'de' yyyy",
+            {
+              locale: pt,
+            }
+          ),
+        }))
+      );
     }
     loadRegistrations();
   }, []);
@@ -45,7 +65,7 @@ export default function Registration() {
         </div>
       </Header>
 
-      <Table template="4fr 2fr 2fr 2fr 2fr 1fr 1fr">
+      <Table template="3fr 3fr 3fr 3fr 1fr 1fr 1fr">
         <thead>
           <tr>
             <th>ALUNO</th>
@@ -62,9 +82,14 @@ export default function Registration() {
             <tr key={registration.id}>
               <td>{registration.student.name}</td>
               <td>{registration.plan.title}</td>
-              <td>{registration.start_date}</td>
-              <td>{registration.end_date}</td>
-              <td>{registration.active ? 'sim' : 'não'}</td>
+              <td>{registration.format_start_date}</td>
+              <td>{registration.format_end_date}</td>
+              <td>
+                <MdCheckCircle
+                  size={24}
+                  color={registration.active ? '#42cb59' : '#dddddd'}
+                />
+              </td>
               <td className="align-right">
                 <button
                   type="button"

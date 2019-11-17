@@ -3,9 +3,11 @@ import { MdDone, MdKeyboardArrowLeft } from 'react-icons/md';
 import { Form, Input, Select } from '@rocketseat/unform';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
-import { parseISO } from 'date-fns';
+import { parseISO, addMonths, format } from 'date-fns';
+import * as Yup from 'yup';
 import history from '~/services/history';
 import api from '~/services/api';
+import { formatPrice } from '~/util/format';
 
 import { BodyForm } from './styles';
 
@@ -15,9 +17,23 @@ import Container from '~/components/Container';
 import Field from '~/components/Field';
 import Datepicker from '~/components/Datepicker';
 
+const schema = Yup.object().shape({
+  start_date: Yup.date()
+    .required('A data inicial é obrigatoria')
+    .typeError('Insira uma data'),
+  plan_id: Yup.number()
+    .required('O plano é obrigatorio')
+    .typeError('Insira um plano'),
+  student_id: Yup.number()
+    .required('O estudante é obrigatorio')
+    .typeError('Insira um estudante válido'),
+});
+
 export default function RegistrationForm({ match }) {
   const [plans, setPlans] = useState([]);
   const [students, setStudents] = useState([]);
+  const [endDate, setEndDate] = useState('');
+  const [price, setPrice] = useState('');
   const [registration, setRegistration] = useState({
     start_date: null,
     plan_id: null,
@@ -61,10 +77,37 @@ export default function RegistrationForm({ match }) {
 
   useEffect(() => {
     const { plan_id, start_date } = registration;
-  }, [registration]);
+
+    if (plan_id !== null && start_date !== null) {
+      const plan = plans.find(p => p.id === parseInt(plan_id)); // eslint-disable-line
+      setPrice(formatPrice(plan.duration * plan.price));
+      setEndDate(format(addMonths(start_date, plan.duration), 'dd/MM/yyyy'));
+    } else {
+      setPrice(formatPrice(0));
+      setEndDate('');
+    }
+  }, [registration]);// eslint-disable-line
 
   function handleGoBack() {
     history.push(`/registration`);
+  }
+
+  async function handleSubmit({ student_id, plan_id, start_date }) {
+    console.tron.log({
+      student_id,
+      plan_id,
+      start_date,
+    });
+    try {
+      const data = { student_id, plan_id, start_date };
+      const response = id // eslint-disable-line
+        ? await api.put(`/registration/${id}`, data)
+        : await api.post('/registration', data);
+      toast.success('Plano salvo com sucesso');
+      history.push(`/registration`);
+    } catch (error) {
+      toast.error('Error ao salvar o plano, verifique suas permissões');
+    }
   }
 
   return (
@@ -80,7 +123,7 @@ export default function RegistrationForm({ match }) {
           />
           <Button
             type="submit"
-            form="planForm"
+            form="registrationForm"
             text="SALVAR"
             Icon={MdDone}
             styledType="primary"
@@ -89,12 +132,23 @@ export default function RegistrationForm({ match }) {
       </Header>
 
       <BodyForm>
-        <Form initialData={registration}>
+        <Form
+          initialData={registration}
+          id="registrationForm"
+          onSubmit={handleSubmit}
+          schema={schema}
+        >
           <Field>
             <Select
               label="aluno"
               name="student_id"
               value={registration.student_id}
+              onChange={value =>
+                setRegistration({
+                  ...registration,
+                  student_id: value.target.value,
+                })
+              }
               options={students}
             />
           </Field>
@@ -126,10 +180,15 @@ export default function RegistrationForm({ match }) {
               />
             </Field>
             <Field>
-              <Input label="Data de termino" name="end_date" disabled />
+              <Input
+                label="Data de termino"
+                name="endDate"
+                disabled
+                value={endDate}
+              />
             </Field>
             <Field>
-              <Input label="Valor Final" name="price" disabled />
+              <Input label="Valor Final" name="price" disabled value={price} />
             </Field>
           </div>
         </Form>
