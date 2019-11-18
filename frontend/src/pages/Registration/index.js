@@ -58,6 +58,7 @@ export default function Registration() {
       }
     }
   }
+
   return (
     <Container maxWidth={1000} minWidth={800}>
       <Header>
@@ -87,38 +88,42 @@ export default function Registration() {
           </tr>
         </thead>
         <tbody>
-          {registrations.map(registration => (
-            <tr key={registration.id}>
-              <td>{registration.student.name}</td>
-              <td>{registration.plan.title}</td>
-              <td>{registration.format_start_date}</td>
-              <td>{registration.format_end_date}</td>
-              <td>
-                <MdCheckCircle
-                  size={24}
-                  color={registration.active ? '#42cb59' : '#dddddd'}
-                />
-              </td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  className="edit"
-                  onClick={() => handleEdit(registration.id)}
-                >
-                  editar
-                </button>
-              </td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  className="delete"
-                  onClick={() => handleDelete(registration.id)}
-                >
-                  apagar
-                </button>
-              </td>
-            </tr>
-          ))}
+          {registrations.length > 0 ? (
+            registrations.map(registration => (
+              <tr key={registration.id}>
+                <td>{registration.student.name}</td>
+                <td>{registration.plan.title}</td>
+                <td>{registration.format_start_date}</td>
+                <td>{registration.format_end_date}</td>
+                <td>
+                  <MdCheckCircle
+                    size={24}
+                    color={registration.active ? '#42cb59' : '#dddddd'}
+                  />
+                </td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    className="edit"
+                    onClick={() => handleEdit(registration.id)}
+                  >
+                    editar
+                  </button>
+                </td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={() => handleDelete(registration.id)}
+                  >
+                    apagar
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <td className="text-center">Sem itens na lista</td>
+          )}
         </tbody>
       </Table>
     </Container>

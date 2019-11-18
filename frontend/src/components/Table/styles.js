@@ -8,7 +8,6 @@ export const Container = styled.table`
 
   tr {
     display: grid;
-    /* grid-template-columns: 4fr 2fr 2fr 2fr 2fr 1fr 1fr; */
     grid-template-columns: ${props => props.template};
   }
 
@@ -45,5 +44,9 @@ export const Container = styled.table`
     &.delete {
       color: #de3b3b;
     }
+  }
+
+  .text-center {
+    text-align: center;
   }
 `;

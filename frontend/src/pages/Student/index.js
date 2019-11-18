@@ -11,7 +11,6 @@ import SearchBar from '~/components/SearchBar';
 import Container from '~/components/Container';
 
 import api from '~/services/api';
-// import { Container } from './styles';
 
 export default function Student() {
   const [students, setStudents] = useState([]);
@@ -77,31 +76,35 @@ export default function Student() {
           </tr>
         </thead>
         <tbody>
-          {students.map(student => (
-            <tr>
-              <td>{student.name}</td>
-              <td>{student.email}</td>
-              <td>{student.age || 'Não informado'}</td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  onClick={() => handleEdit(student.id)}
-                  className="edit"
-                >
-                  editar
-                </button>
-              </td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  onClick={() => handleDelete(student.id)}
-                  className="delete"
-                >
-                  apagar
-                </button>
-              </td>
-            </tr>
-          ))}
+          {students.length > 0 ? (
+            students.map(student => (
+              <tr>
+                <td>{student.name}</td>
+                <td>{student.email}</td>
+                <td>{student.age || 'Não informado'}</td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(student.id)}
+                    className="edit"
+                  >
+                    editar
+                  </button>
+                </td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(student.id)}
+                    className="delete"
+                  >
+                    apagar
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <td className="text-center">Sem itens na lista</td>
+          )}
         </tbody>
       </Table>
     </Container>

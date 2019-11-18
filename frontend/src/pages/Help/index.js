@@ -71,20 +71,24 @@ export default function Help() {
           </tr>
         </thead>
         <tbody>
-          {helps.map(help => (
-            <tr>
-              <td>{help.student.name}</td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  className="edit"
-                  onClick={() => openModal(help.id)}
-                >
-                  responder
-                </button>
-              </td>
-            </tr>
-          ))}
+          {helps.length > 0 ? (
+            helps.map(help => (
+              <tr>
+                <td>{help.student.name}</td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    className="edit"
+                    onClick={() => openModal(help.id)}
+                  >
+                    responder
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <td className="text-center">Sem itens na lista</td>
+          )}
         </tbody>
       </Table>
     </Container>

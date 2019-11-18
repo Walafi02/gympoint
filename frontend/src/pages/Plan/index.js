@@ -80,31 +80,35 @@ export default function Plan() {
         </thead>
 
         <tbody>
-          {plans.map(plan => (
-            <tr key={plan.id}>
-              <td>{plan.title}</td>
-              <td>{plan.formatDuration}</td>
-              <td>{plan.formatPrice}</td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  onClick={() => handleEdit(plan.id)}
-                  className="edit"
-                >
-                  editar
-                </button>
-              </td>
-              <td className="align-right">
-                <button
-                  type="button"
-                  onClick={() => handleDelete(plan.id)}
-                  className="delete"
-                >
-                  apagar
-                </button>
-              </td>
-            </tr>
-          ))}
+          {plans.length > 0 ? (
+            plans.map(plan => (
+              <tr key={plan.id}>
+                <td>{plan.title}</td>
+                <td>{plan.formatDuration}</td>
+                <td>{plan.formatPrice}</td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(plan.id)}
+                    className="edit"
+                  >
+                    editar
+                  </button>
+                </td>
+                <td className="align-right">
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(plan.id)}
+                    className="delete"
+                  >
+                    apagar
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <td className="text-center">Sem itens na lista</td>
+          )}
         </tbody>
       </Table>
     </Container>
