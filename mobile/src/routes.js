@@ -8,7 +8,10 @@ import Header from '~/components/Header';
 
 import SignIn from '~/pages/SignIn';
 import Checkin from '~/pages/Checkin';
-import Help from '~/pages/Help';
+
+import Helps from '~/pages/Help/Helps';
+import NewRequest from '~/pages/Help/NewRequest';
+import Response from '~/pages/Help/Response';
 
 export default (signedIn = false) =>
   createAppContainer(
@@ -35,7 +38,9 @@ export default (signedIn = false) =>
             ),
             Help: createStackNavigator(
               {
-                Help,
+                Helps,
+                Response,
+                NewRequest,
               },
               {
                 navigationOptions: {
