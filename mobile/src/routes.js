@@ -33,27 +33,36 @@ export default (signedIn = false) =>
                 },
                 defaultNavigationOptions: {
                   headerTitle: () => <Header />,
+                  // headerTitle: 'gympoint',
                 },
               }
             ),
-            Help: createStackNavigator(
-              {
-                Helps,
-                Response,
-                NewRequest,
-              },
-              {
-                navigationOptions: {
-                  tabBarLabel: 'Ajuda',
-                  tabBarIcon: ({tintColor}) => (
-                    <Icon name="live-help" size={20} color={tintColor} />
-                  ),
+            Help: {
+              screen: createStackNavigator(
+                {
+                  Helps,
+                  Response,
+                  NewRequest,
                 },
-                defaultNavigationOptions: {
-                  headerTitle: () => <Header />,
-                },
-              }
-            ),
+                {
+                  navigationOptions: {
+                    tabBarLabel: 'Ajuda',
+                    tabBarIcon: ({tintColor}) => (
+                      <Icon name="live-help" size={20} color={tintColor} />
+                    ),
+                  },
+                  defaultNavigationOptions: {
+                    headerTitle: () => <Header />,
+                    headerTitleContainerStyle: {
+                      left: 0,
+                    },
+                    headerLeftContainerStyle: {
+                      marginLeft: 20,
+                    },
+                  },
+                }
+              ),
+            },
           },
           {
             resetOnBlur: true, // reseta a rota toda vez q ela voltar
