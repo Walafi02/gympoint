@@ -1,14 +1,47 @@
-import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
+import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
-// import { Container } from './styles';
+import {
+  Background,
+  Container,
+  ResponseBody,
+  ResponseTitleView,
+  Title,
+  Date,
+  ResponseView,
+  ResponseText,
+} from './styles';
 
-export default function Response() {
+export default function Response({navigation}) {
+  const help = navigation.getParam('help');
+
+  useEffect(() => {
+    console.tron.log(help);
+  }, [help]);
+
   return (
-    <View>
-      <Text>Response</Text>
-    </View>
+    <Background>
+      <Container>
+        <ResponseBody>
+          <ResponseTitleView>
+            <Title>Pergunta</Title>
+            <Date>{help.dateFormated}</Date>
+          </ResponseTitleView>
+          <ResponseView>
+            <ResponseText>{help.request}</ResponseText>
+          </ResponseView>
+
+          <ResponseTitleView>
+            <Title>Resposta</Title>
+          </ResponseTitleView>
+          <ResponseView>
+            <ResponseText>{help.response}</ResponseText>
+          </ResponseView>
+        </ResponseBody>
+      </Container>
+    </Background>
   );
 }
 
@@ -16,9 +49,16 @@ Response.navigationOptions = ({navigation}) => ({
   headerLeft: () => (
     <TouchableOpacity
       onPress={() => {
-        // navigation.navigate('Dashboard');
+        navigation.goBack();
       }}>
-      <Icon name="chevron-left" size={24} color="#aaa" />
+      <Icon name="chevron-left" size={24} color="#000000" />
     </TouchableOpacity>
   ),
 });
+
+Response.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
+  }).isRequired,
+};

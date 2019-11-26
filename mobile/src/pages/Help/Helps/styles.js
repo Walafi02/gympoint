@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {RectButton} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const Container = styled.View`
   flex: 1;
@@ -37,4 +38,19 @@ export const RequestText = styled.Text`
   font-size: 14px;
   color: #666666;
   line-height: 26px;
+`;
+
+export const ResponseView = styled.View`
+  flex-direction: row;
+`;
+
+export const ResponseIcon = styled(Icon)`
+  color: ${props => (props.responded ? '#42cb59' : '#999999')};
+`;
+
+export const ResponseText = styled.Text.attrs({
+  numberOfLines: 3,
+})`
+  margin-left: 5px;
+  color: ${props => (props.responded ? '#42cb59' : '#999999')};
 `;
