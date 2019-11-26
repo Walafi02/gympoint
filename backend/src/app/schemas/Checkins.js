@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const CheckinsSchema = new mongoose.Schema({
   student_id: {
@@ -16,5 +17,7 @@ const CheckinsSchema = new mongoose.Schema({
     default: new Date(),
   },
 });
+
+CheckinsSchema.plugin(mongoosePaginate);
 
 export default mongoose.model('Checkins', CheckinsSchema);

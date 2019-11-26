@@ -50,7 +50,6 @@ export default function Helps({navigation}) {
     setRequests(
       datas.map(date => ({
         ...date,
-        // responded: !!date.response,
         dateFormated: formatRelative(parseISO(date.date), new Date(), {
           locale: pt,
         }),

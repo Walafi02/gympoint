@@ -3,6 +3,8 @@ import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 // import {View, Text} from 'react-native';
 
+import api from '~/services/api';
+
 import Button from '~/components/Button';
 
 import {
@@ -15,6 +17,7 @@ import {
 
 export default function Checkin() {
   const [checkins, setCheckins] = useState([]);
+  const [checkins2, setCheckins2] = useState({});
 
   useEffect(() => {
     const data = [
@@ -29,6 +32,13 @@ export default function Checkin() {
       {title: 'Check-in #2', date: '2019-11-21T14:00:00.000Z'},
       {title: 'Check-in #1', date: '2019-11-20T12:00:00.000Z'},
     ];
+
+    async function loadCheckins() {
+      const response = await api.get('/students/1/checkins');
+      console.tron.log(response.data);
+    }
+
+    loadCheckins();
 
     setCheckins(
       data.map(checkin => ({

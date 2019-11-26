@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation'; // createSwitchNavigator não gera historico
 import {createStackNavigator} from 'react-navigation-stack';

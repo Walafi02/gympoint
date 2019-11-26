@@ -14,14 +14,14 @@ const routes = new Router();
 
 routes.post('/session', sessionController.store);
 
-routes.use(authMiddleware);
-
 routes.get('/students/help-orders', helpOrdersController.index);
 routes.post('/students/:id_student/help-orders', helpOrdersController.store);
 routes.post('/help-orders/:id_help_order/answer', helpResponseController.store);
 
+routes.get('/students/:student_id/checkins', checkinController.index);
 routes.post('/students/:id_student/checkins', checkinController.store);
-routes.get('/students/:id_student/checkins', checkinController.index);
+
+routes.use(authMiddleware);
 
 routes.get('/students/:id?', studentsController.index);
 routes.post('/students', studentsController.store);

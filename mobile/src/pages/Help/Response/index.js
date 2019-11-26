@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 
 import {
-  Background,
+  // Background,
   Container,
   ResponseBody,
   ResponseTitleView,
@@ -13,6 +13,7 @@ import {
   ResponseView,
   ResponseText,
 } from './styles';
+import Background from '~/components/Background';
 
 export default function Response({navigation}) {
   const help = navigation.getParam('help');

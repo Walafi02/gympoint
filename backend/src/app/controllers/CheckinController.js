@@ -6,17 +6,20 @@ import Checkins from '../schemas/Checkins';
 
 class CheckinController {
   async index(req, res) {
-    const { id_student } = req.params;
+    const { student_id } = req.params;
+    const { page = 1 } = req.query;
 
-    const student = await Student.findByPk(id_student);
+    const student = await Student.findByPk(student_id);
 
     if (!student) {
       return res.status(401).json({ error: 'Student not found' });
     }
 
-    const checkins = await Checkins.find({
-      student_id: id_student,
-    });
+    const checkins = await Checkins.paginate(
+      { student_id },
+      { page, limit: 5 },
+      { sort: 'created_at' }
+    );
 
     return res.json(checkins);
   }
