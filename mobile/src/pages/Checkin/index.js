@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import {ActivityIndicator} from 'react-native';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
-// import {View, Text} from 'react-native';
 
 import api from '~/services/api';
 
@@ -17,9 +17,23 @@ import {
 
 export default function Checkin() {
   const [checkins, setCheckins] = useState([]);
-  const [checkins2, setCheckins2] = useState({});
+  const [page, setPage] = useState(0);
+  const [checkinsTotal, setCheckinsTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  async function loadCheckins(itens = []) {
+    const response = await api.get('/students/1/checkins', {
+      params: {
+        page,
+      },
+    });
+
+    setCheckins({...itens, ...response.data});
+    console.tron.log(response.data);
+  }
 
   useEffect(() => {
+    setLoading(true);
     const data = [
       {title: 'Check-in #10', date: '2019-11-25T00:00:00.000Z'},
       {title: 'Check-in #9', date: '2019-11-24T21:00:00.000Z'},
@@ -33,11 +47,6 @@ export default function Checkin() {
       {title: 'Check-in #1', date: '2019-11-20T12:00:00.000Z'},
     ];
 
-    async function loadCheckins() {
-      const response = await api.get('/students/1/checkins');
-      console.tron.log(response.data);
-    }
-
     loadCheckins();
 
     setCheckins(
@@ -48,34 +57,41 @@ export default function Checkin() {
         }),
       }))
     );
-  }, []);
+  }, []); // eslint-disable-line
 
   function refreshList() {
-    console.tron.log('recarrega');
+    setPage(1);
+    loadCheckins();
   }
 
   function loadMore() {
-    console.tron.log('carrega mais itens');
+    setPage(p => p + 1);
+    loadCheckins(checkins);
+    // console.tron.log('carrega mais itens');
   }
 
   return (
     <Container>
       <Button onPress={() => {}}>Novo check-in</Button>
 
-      <CheckinsList
-        data={checkins}
-        keyExtractor={item => item.title}
-        onRefresh={refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
-        refreshing={false} // Variável que armazena um estado true/false que representa se a lista está atualizando
-        onEndReachedThreshold={0.2} // Carrega mais itens quando chegar em 20% do fim
-        onEndReached={loadMore} // Função que carrega mais itens
-        renderItem={({item}) => (
-          <CheckinItem>
-            <CheckinTitle>{item.title}</CheckinTitle>
-            <Checkindate>{item.dataFormated}</Checkindate>
-          </CheckinItem>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator color="#ccc" size={24} />
+      ) : (
+        <CheckinsList
+          data={checkins}
+          keyExtractor={item => item.title}
+          onRefresh={refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
+          refreshing={false} // Variável que armazena um estado true/false que representa se a lista está atualizando
+          onEndReachedThreshold={0.2} // Carrega mais itens quando chegar em 20% do fim
+          onEndReached={loadMore} // Função que carrega mais itens
+          renderItem={({item}) => (
+            <CheckinItem>
+              <CheckinTitle>{item.title}</CheckinTitle>
+              <Checkindate>{item.dataFormated}</Checkindate>
+            </CheckinItem>
+          )}
+        />
+      )}
     </Container>
   );
 }
