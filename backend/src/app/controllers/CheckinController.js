@@ -17,7 +17,7 @@ class CheckinController {
 
     const checkins = await Checkins.paginate(
       { student_id },
-      { page, limit: 5 },
+      { page, limit: 10 },
       { sort: 'created_at' }
     );
 

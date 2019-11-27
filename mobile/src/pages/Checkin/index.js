@@ -17,57 +17,55 @@ import {
 
 export default function Checkin() {
   const [checkins, setCheckins] = useState([]);
-  const [page, setPage] = useState(0);
-  const [checkinsTotal, setCheckinsTotal] = useState(0);
+  const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  async function loadCheckins(itens = []) {
-    const response = await api.get('/students/1/checkins', {
-      params: {
-        page,
-      },
-    });
+  async function loadCheckins(page = 1, itens = []) {
+    setPages(page);
+    try {
+      const {data} = await api.get('/students/1/checkins', {
+        params: {
+          page,
+        },
+      });
 
-    setCheckins({...itens, ...response.data});
-    console.tron.log(response.data);
+      let total = data.totalDocs - itens.length;
+
+      // console.tron.log(total);
+      setCheckins(
+        ...itens,
+        data.docs.map(d => ({
+          id: d._id,
+          title: `Check-in #${total--}`,
+          dataFormated: formatRelative(parseISO(d.created_at), new Date(), {
+            locale: pt,
+          }),
+        }))
+      );
+    } catch (error) {
+      // console.tron.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    setLoading(true);
-    const data = [
-      {title: 'Check-in #10', date: '2019-11-25T00:00:00.000Z'},
-      {title: 'Check-in #9', date: '2019-11-24T21:00:00.000Z'},
-      {title: 'Check-in #8', date: '2019-11-24T20:00:00.000Z'},
-      {title: 'Check-in #7', date: '2019-11-24T19:00:00.000Z'},
-      {title: 'Check-in #6', date: '2019-11-24T17:00:00.000Z'},
-      {title: 'Check-in #5', date: '2019-11-24T16:00:00.000Z'},
-      {title: 'Check-in #4', date: '2019-11-23T18:00:00.000Z'},
-      {title: 'Check-in #3', date: '2019-11-22T15:00:00.000Z'},
-      {title: 'Check-in #2', date: '2019-11-21T14:00:00.000Z'},
-      {title: 'Check-in #1', date: '2019-11-20T12:00:00.000Z'},
-    ];
+    console.tron.log(checkins);
+  }, [checkins]); // eslint-disable-line
 
+  useEffect(() => {
     loadCheckins();
-
-    setCheckins(
-      data.map(checkin => ({
-        ...checkin,
-        dataFormated: formatRelative(parseISO(checkin.date), new Date(), {
-          locale: pt,
-        }),
-      }))
-    );
   }, []); // eslint-disable-line
 
   function refreshList() {
-    setPage(1);
+    // setPage(1);
+    // setLoading(true);
     loadCheckins();
   }
 
   function loadMore() {
-    setPage(p => p + 1);
-    loadCheckins(checkins);
-    // console.tron.log('carrega mais itens');
+    console.log(checkins);
+    loadCheckins(2, checkins);
   }
 
   return (
@@ -79,7 +77,7 @@ export default function Checkin() {
       ) : (
         <CheckinsList
           data={checkins}
-          keyExtractor={item => item.title}
+          keyExtractor={item => String(item.id)}
           onRefresh={refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
           refreshing={false} // Variável que armazena um estado true/false que representa se a lista está atualizando
           onEndReachedThreshold={0.2} // Carrega mais itens quando chegar em 20% do fim
