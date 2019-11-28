@@ -14,14 +14,18 @@ const routes = new Router();
 
 routes.post('/session', sessionController.store);
 
-routes.get('/students/help-orders', helpOrdersController.index);
+// rotas do aluno
 routes.post('/students/:id_student/help-orders', helpOrdersController.store);
-routes.post('/help-orders/:id_help_order/answer', helpResponseController.store);
+routes.get('/students/:student_id/help-orders', helpOrdersController.index);
 
 routes.get('/students/:student_id/checkins', checkinController.index);
-routes.post('/students/:id_student/checkins', checkinController.store);
+routes.post('/students/:student_id/checkins', checkinController.store);
 
 routes.use(authMiddleware);
+
+// rotas do admin
+routes.get('/students/help-orders', helpResponseController.index);
+routes.post('/help-orders/:id_help_order/answer', helpResponseController.store);
 
 routes.get('/students/:id?', studentsController.index);
 routes.post('/students', studentsController.store);

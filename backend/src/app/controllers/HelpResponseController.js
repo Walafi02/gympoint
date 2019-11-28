@@ -4,9 +4,27 @@ import Queue from '../../lib/Queue';
 
 import ResponseMessage from '../../jobs/ResponseMessage';
 import HelpOrder from '../models/HelpOrder';
-import Studant from '../models/Student';
+import Student from '../models/Student';
 
 class HelpResponseController {
+  async index(req, res) {
+    const helpOrder = await HelpOrder.findAll({
+      where: {
+        answer: null,
+      },
+      attributes: ['id', 'question'],
+      include: [
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    return res.json(helpOrder);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       answer: Yup.string().required(),
@@ -27,7 +45,7 @@ class HelpResponseController {
      * implementar aqui o envio de email para o estudante com a resposta
      */
 
-    const studant = await Studant.findByPk(helpOrderUpdated.student_id);
+    const studant = await Student.findByPk(helpOrderUpdated.student_id);
 
     await Queue.add(ResponseMessage.key, { helpOrder, studant });
 

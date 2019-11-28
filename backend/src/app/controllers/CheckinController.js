@@ -25,9 +25,9 @@ class CheckinController {
   }
 
   async store(req, res) {
-    const { id_student } = req.params;
+    const { student_id } = req.params;
 
-    const student = await Student.findByPk(id_student);
+    const student = await Student.findByPk(student_id);
 
     if (!student) {
       return res.status(401).json({ error: 'Student not found' });
@@ -37,7 +37,7 @@ class CheckinController {
     const endDate = subDays(startDate, 7);
 
     const checkins = await Checkins.find({
-      student_id: id_student,
+      student_id,
       created_at: {
         $gte: endDate,
         $lt: startDate,
@@ -51,7 +51,7 @@ class CheckinController {
     }
 
     const checkin = await Checkins.create({
-      student_id: id_student,
+      student_id,
     });
 
     return res.json(checkin);
