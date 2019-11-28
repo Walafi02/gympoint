@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import Button from '~/components/Button';
 
 export const Container = styled.ScrollView``;
 
@@ -16,4 +17,8 @@ export const TextInput = styled.TextInput.attrs({
   padding-top: 20px;
   margin: 10px 0;
   line-height: 16px;
+`;
+
+export const ButtonSubmit = styled(Button)`
+  opacity: ${props => (props.enabled ? 1 : 0.6)};
 `;

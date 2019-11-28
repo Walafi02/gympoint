@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import PropTypes from 'prop-types';
+import api from '~/services/api';
 
 import Button from '~/components/Button';
 
@@ -19,7 +20,33 @@ import {
 } from './styles';
 
 export default function Helps({navigation}) {
+  const student_id = 1;
   const [requests, setRequests] = useState([]);
+
+  async function loadHelps(page = 1, oldRequests = []) {
+    try {
+      const {data} = await api.get(`/students/${student_id}/help-orders`);
+
+      const newRequests = data.rows.map(request => ({
+        id: request.id,
+        dateFormated: formatRelative(parseISO(request.createdAt), new Date(), {
+          locale: pt,
+        }),
+        question: request.question,
+        answer: request.answer ? request.answer : false,
+        answerDateFormated: request.answer
+          ? formatRelative(parseISO(request.answer_at), new Date(), {
+              locale: pt,
+            })
+          : null,
+      }));
+      setRequests([...oldRequests, ...newRequests]);
+
+      console.tron.log(newRequests);
+    } catch (error) {
+      console.tron.error(error);
+    }
+  }
 
   useEffect(() => {
     const datas = [
@@ -47,14 +74,16 @@ export default function Helps({navigation}) {
       },
     ];
 
-    setRequests(
-      datas.map(date => ({
-        ...date,
-        dateFormated: formatRelative(parseISO(date.date), new Date(), {
-          locale: pt,
-        }),
-      }))
-    );
+    loadHelps();
+
+    // setRequests(
+    //   datas.map(date => ({
+    //     ...date,
+    //     dateFormated: formatRelative(parseISO(date.date), new Date(), {
+    //       locale: pt,
+    //     }),
+    //   }))
+    // );
   }, []);
 
   function handleSelectHelp(help) {
@@ -75,22 +104,22 @@ export default function Helps({navigation}) {
         renderItem={({item}) => (
           <Request
             onPress={() => handleSelectHelp(item)}
-            enabled={!!item.response}>
+            enabled={!!item.answer}>
             <RequestHeader>
               <ResponseView>
                 <ResponseIcon
                   name="check-circle"
                   size={20}
-                  responded={item.response || false}
+                  responded={item.answer}
                 />
-                <ResponseText responded={item.response || false}>
-                  {item.response ? 'Respondida' : 'Sem resposta'}
+                <ResponseText responded={item.answer}>
+                  {item.answer ? 'Respondida' : 'Sem resposta'}
                 </ResponseText>
               </ResponseView>
               <DateText>{item.dateFormated}</DateText>
             </RequestHeader>
             <RequestBody>
-              <RequestText>{item.request}</RequestText>
+              <RequestText>{item.question}</RequestText>
             </RequestBody>
           </Request>
         )}

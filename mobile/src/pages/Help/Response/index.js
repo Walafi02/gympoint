@@ -31,14 +31,15 @@ export default function Response({navigation}) {
             <Date>{help.dateFormated}</Date>
           </ResponseTitleView>
           <ResponseView>
-            <ResponseText>{help.request}</ResponseText>
+            <ResponseText>{help.question}</ResponseText>
           </ResponseView>
 
           <ResponseTitleView>
             <Title>Resposta</Title>
+            <Date>{help.answerDateFormated}</Date>
           </ResponseTitleView>
           <ResponseView>
-            <ResponseText>{help.response}</ResponseText>
+            <ResponseText>{help.answer}</ResponseText>
           </ResponseView>
         </ResponseBody>
       </Container>

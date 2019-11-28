@@ -11,7 +11,7 @@ import SignIn from '~/pages/SignIn';
 import Checkin from '~/pages/Checkin';
 
 import Helps from '~/pages/Help/Helps';
-import NewRequest from '~/pages/Help/NewRequest';
+import NewRequest from '~/pages/Help/Request';
 import Response from '~/pages/Help/Response';
 
 export default (signedIn = false) =>

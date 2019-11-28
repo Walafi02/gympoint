@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 
@@ -16,68 +16,88 @@ import {
 } from './styles';
 
 export default function Checkin() {
+  const student_id = 1;
+
   const [checkins, setCheckins] = useState([]);
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(null);
 
-  async function loadCheckins(page = 1, itens = []) {
+  async function loadCheckins(page = 1, oldCheckins = []) {
     setPages(page);
     try {
-      const {data} = await api.get('/students/1/checkins', {
+      const {data} = await api.get(`/students/${student_id}/checkins`, {
         params: {
           page,
         },
       });
+      setTotalPages(data.totalPages);
 
-      let total = data.totalDocs - itens.length;
+      let total = data.totalDocs - oldCheckins.length;
 
-      // console.tron.log(total);
-      setCheckins(
-        ...itens,
-        data.docs.map(d => ({
-          id: d._id,
-          title: `Check-in #${total--}`,
-          dataFormated: formatRelative(parseISO(d.created_at), new Date(), {
-            locale: pt,
-          }),
-        }))
-      );
+      const newCheckins = data.docs.map(checkin => ({
+        id: checkin._id,
+        title: `Check-in #${total--}`,
+        dataFormated: formatRelative(parseISO(checkin.created_at), new Date(), {
+          locale: pt,
+        }),
+      }));
+
+      setCheckins([...oldCheckins, ...newCheckins]);
     } catch (error) {
-      // console.tron.log(error);
+      if (error.response.data.error) {
+        Alert.alert('Error', error.response.data.error);
+      }
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    console.tron.log(checkins);
-  }, [checkins]); // eslint-disable-line
-
-  useEffect(() => {
+    setLoading(true);
     loadCheckins();
   }, []); // eslint-disable-line
 
   function refreshList() {
-    // setPage(1);
-    // setLoading(true);
     loadCheckins();
   }
 
   function loadMore() {
-    console.log(checkins);
-    loadCheckins(2, checkins);
+    if (totalPages !== pages) loadCheckins(pages + 1, checkins);
+  }
+
+  async function handleRequestCheckin() {
+    try {
+      await api.post(`/students/${student_id}/checkins`);
+      Alert.alert('Sucesso', 'Check-in Realizado!');
+      setLoading(true);
+      loadCheckins();
+    } catch (error) {
+      if (error) {
+        Alert.alert('Error', error.response.data.error);
+      }
+    }
+  }
+
+  async function handleCheckin() {
+    Alert.alert(
+      'Check-in',
+      'Deseja realizar um ckeck-in na academia?',
+      [{text: 'NÃO'}, {text: 'SIM', onPress: () => handleRequestCheckin()}],
+      {cancelable: true}
+    );
   }
 
   return (
     <Container>
-      <Button onPress={() => {}}>Novo check-in</Button>
+      <Button onPress={handleCheckin}>Novo check-in</Button>
 
       {loading ? (
         <ActivityIndicator color="#ccc" size={24} />
       ) : (
         <CheckinsList
           data={checkins}
-          keyExtractor={item => String(item.id)}
+          keyExtractor={item => item.id}
           onRefresh={refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
           refreshing={false} // Variável que armazena um estado true/false que representa se a lista está atualizando
           onEndReachedThreshold={0.2} // Carrega mais itens quando chegar em 20% do fim
