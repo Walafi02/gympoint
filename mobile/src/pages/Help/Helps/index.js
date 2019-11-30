@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {ActivityIndicator, Alert} from 'react-native';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import PropTypes from 'prop-types';
@@ -22,12 +23,21 @@ import {
 export default function Helps({navigation}) {
   const student_id = 1;
   const [requests, setRequests] = useState([]);
+  const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(null);
 
   async function loadHelps(page = 1, oldRequests = []) {
+    setPages(page);
     try {
-      const {data} = await api.get(`/students/${student_id}/help-orders`);
+      const {data} = await api.get(`/students/${student_id}/help-orders`, {
+        params: {
+          page,
+        },
+      });
+      setTotalPages(data.pages);
 
-      const newRequests = data.rows.map(request => ({
+      const newRequests = data.docs.map(request => ({
         id: request.id,
         dateFormated: formatRelative(parseISO(request.createdAt), new Date(), {
           locale: pt,
@@ -41,49 +51,18 @@ export default function Helps({navigation}) {
           : null,
       }));
       setRequests([...oldRequests, ...newRequests]);
-
-      console.tron.log(newRequests);
     } catch (error) {
-      console.tron.error(error);
+      if (error.response.data.error) {
+        Alert.alert('Error', error.response.data.error);
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
-    const datas = [
-      {
-        id: 1,
-        date: '2019-11-25T00:00:00.000Z',
-        request:
-          'Olá pessoal da academia, gostaria de saber se quando acordar devo ingerir batata doce e frango logo de primeira, preparar as...',
-        response:
-          'Olá pessoal da academia, gostaria de saber se quando acordar devo ingerir batata doce e frango logo de primeira, preparar as...',
-      },
-      {
-        id: 2,
-        date: '2019-11-24T00:00:00.000Z',
-        request:
-          'Olá pessoal da academia, gostaria de saber se quando acordar devo ingerir batata doce e frango logo de primeira, preparar as...',
-      },
-      {
-        id: 3,
-        date: '2019-11-23T00:00:00.000Z',
-        request:
-          'Olá pessoal da academia, gostaria de saber se quando acordar devo ingerir batata doce e frango logo de primeira, preparar as...',
-        response:
-          'Olá pessoal da academia, gostaria de saber se quando acordar devo ingerir batata doce e frango logo de primeira, preparar as...',
-      },
-    ];
-
+    setLoading(true);
     loadHelps();
-
-    // setRequests(
-    //   datas.map(date => ({
-    //     ...date,
-    //     dateFormated: formatRelative(parseISO(date.date), new Date(), {
-    //       locale: pt,
-    //     }),
-    //   }))
-    // );
   }, []);
 
   function handleSelectHelp(help) {
@@ -94,36 +73,52 @@ export default function Helps({navigation}) {
     navigation.navigate('NewRequest');
   }
 
+  function refreshList() {
+    loadHelps();
+  }
+
+  function loadMore() {
+    if (totalPages !== pages) loadHelps(pages + 1, requests);
+  }
+
   return (
     <Container>
       <Button onPress={handleNewRequest}>Novo pedido de auxílio</Button>
 
-      <RequestList
-        data={requests}
-        keyExtractor={item => String(item.id)}
-        renderItem={({item}) => (
-          <Request
-            onPress={() => handleSelectHelp(item)}
-            enabled={!!item.answer}>
-            <RequestHeader>
-              <ResponseView>
-                <ResponseIcon
-                  name="check-circle"
-                  size={20}
-                  responded={item.answer}
-                />
-                <ResponseText responded={item.answer}>
-                  {item.answer ? 'Respondida' : 'Sem resposta'}
-                </ResponseText>
-              </ResponseView>
-              <DateText>{item.dateFormated}</DateText>
-            </RequestHeader>
-            <RequestBody>
-              <RequestText>{item.question}</RequestText>
-            </RequestBody>
-          </Request>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator color="#ccc" size={24} />
+      ) : (
+        <RequestList
+          data={requests}
+          keyExtractor={item => String(item.id)}
+          onRefresh={refreshList} // Função dispara quando o usuário arrasta a lista pra baixo
+          refreshing={false} // Variável que armazena um estado true/false que representa se a lista está atualizando
+          onEndReachedThreshold={0.2} // Carrega mais itens quando chegar em 20% do fim
+          onEndReached={loadMore} // Função que carrega mais itens
+          renderItem={({item}) => (
+            <Request
+              onPress={() => handleSelectHelp(item)}
+              enabled={!!item.answer}>
+              <RequestHeader>
+                <ResponseView>
+                  <ResponseIcon
+                    name="check-circle"
+                    size={20}
+                    responded={item.answer}
+                  />
+                  <ResponseText responded={item.answer}>
+                    {item.answer ? 'Respondida' : 'Sem resposta'}
+                  </ResponseText>
+                </ResponseView>
+                <DateText>{item.dateFormated}</DateText>
+              </RequestHeader>
+              <RequestBody>
+                <RequestText>{item.question}</RequestText>
+              </RequestBody>
+            </Request>
+          )}
+        />
+      )}
     </Container>
   );
 }

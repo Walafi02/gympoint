@@ -24,6 +24,7 @@
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.19.7",
+    "sequelize-paginate": "^1.1.6",
     "yup": "^0.27.0"
   },
   "devDependencies": {

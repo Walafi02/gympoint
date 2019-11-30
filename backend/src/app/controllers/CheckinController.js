@@ -7,7 +7,7 @@ import Checkins from '../schemas/Checkins';
 class CheckinController {
   async index(req, res) {
     const { student_id } = req.params;
-    const { page = 1 } = req.query;
+    const { page = 1, limit = 15 } = req.query;
 
     const student = await Student.findByPk(student_id);
 
@@ -17,8 +17,7 @@ class CheckinController {
 
     const checkins = await Checkins.paginate(
       { student_id },
-      { page, limit: 10 },
-      { sort: 'created_at' }
+      { page, limit, sort: { created_at: -1 } }
     );
 
     return res.json(checkins);
