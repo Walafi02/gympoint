@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 
 import api from '~/services/api';
 
@@ -9,7 +10,7 @@ import Background from '~/components/Background';
 import {Container, ButtonSubmit, TextInput} from './styles';
 
 export default function Request({navigation}) {
-  const student_id = 1;
+  const student_id = useSelector(state => state.auth.student_id);
 
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);

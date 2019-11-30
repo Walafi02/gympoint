@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {Platform} from 'react-native';
+import Button from '~/components/Button';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   enabled: Platform.OS === 'ios',
@@ -16,10 +17,6 @@ export const Form = styled.View`
   margin-top: 40px;
 `;
 
-// export const Input = styled.TextInput`
-//   height: 20px;
-//   width: 100px;
-//   background: red;
-// `;
-
-// export const Button = styled.TouchableOpacity``;
+export const ButtonSubmit = styled(Button)`
+  opacity: ${props => (props.enabled ? 1 : 0.6)};
+`;

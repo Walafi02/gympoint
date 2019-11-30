@@ -1,16 +1,36 @@
 import React, {useState} from 'react';
-import {Image} from 'react-native';
+import {Alert, Image} from 'react-native';
+import {useDispatch} from 'react-redux';
 
-import Button from '~/components/Button';
+// import Button from '~/components/Button';
 import Input from '~/components/Input';
 
 import logo from '~/assets/logo.png';
-import {Container, Form} from './styles';
+import {Container, Form, ButtonSubmit} from './styles';
+import api from '~/services/api';
+
+import * as auth from '~/store/modules/auth/actions';
 
 export default function SignIn() {
   const [id, setId] = useState(null);
-  function handleSubmit() {
-    console.log(`envia ${id}`);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  async function handleSubmit() {
+    dispatch(auth.signInSuccess(id));
+
+    setLoading(true);
+    try {
+      const {data} = await api.post('/session/students', {
+        student_id: id,
+      });
+
+      console.tron.log(data);
+    } catch (error) {
+      if (error) Alert.alert('Error', error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -27,7 +47,9 @@ export default function SignIn() {
           value={id}
           onChangeText={setId}
         />
-        <Button onPress={handleSubmit}>Entrar no sistema</Button>
+        <ButtonSubmit onPress={handleSubmit} enabled={!!id} loading={loading}>
+          Entrar no sistema
+        </ButtonSubmit>
       </Form>
     </Container>
   );

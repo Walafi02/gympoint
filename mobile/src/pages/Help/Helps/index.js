@@ -3,6 +3,7 @@ import {ActivityIndicator, Alert} from 'react-native';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 import api from '~/services/api';
 
 import Button from '~/components/Button';
@@ -21,7 +22,8 @@ import {
 } from './styles';
 
 export default function Helps({navigation}) {
-  const student_id = 1;
+  const student_id = useSelector(state => state.auth.student_id);
+
   const [requests, setRequests] = useState([]);
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -65,14 +67,14 @@ export default function Helps({navigation}) {
   useEffect(() => {
     setLoading(true);
     loadHelps();
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (refresh) {
       setLoading(true);
       loadHelps();
     }
-  }, [refresh]);
+  }, [refresh]); // eslint-disable-line
 
   function handleSelectHelp(help) {
     navigation.navigate('Response', {help});

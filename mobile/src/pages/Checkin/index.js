@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {ActivityIndicator, Alert} from 'react-native';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
+import {useSelector} from 'react-redux';
 
 import api from '~/services/api';
 
@@ -16,7 +17,7 @@ import {
 } from './styles';
 
 export default function Checkin() {
-  const student_id = 1;
+  const student_id = useSelector(state => state.auth.student_id);
 
   const [checkins, setCheckins] = useState([]);
   const [pages, setPages] = useState(1);

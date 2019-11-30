@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import sessionController from './app/controllers/sessionController';
+import studentSessionController from './app/controllers/studentSessionController';
 import studentsController from './app/controllers/studentsController';
 import plansController from './app/controllers/PlansController';
 import registrationController from './app/controllers/RegistrationController';
@@ -15,6 +16,7 @@ const routes = new Router();
 routes.post('/session', sessionController.store);
 
 // rotas do aluno
+routes.post('/session/students', studentSessionController.store);
 routes.post('/students/:id_student/help-orders', helpOrdersController.store);
 routes.get('/students/:student_id/help-orders', helpOrdersController.index);
 
