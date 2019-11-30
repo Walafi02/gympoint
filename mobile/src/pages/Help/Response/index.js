@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 
 import {
-  // Background,
   Container,
   ResponseBody,
   ResponseTitleView,
@@ -17,10 +16,6 @@ import Background from '~/components/Background';
 
 export default function Response({navigation}) {
   const help = navigation.getParam('help');
-
-  useEffect(() => {
-    console.tron.log(help);
-  }, [help]);
 
   return (
     <Background>

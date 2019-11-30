@@ -20,7 +20,7 @@ export default function Request({navigation}) {
       await api.post(`/students/${student_id}/help-orders`, {
         question,
       });
-      navigation.navigate('Helps');
+      navigation.navigate('Helps', {refresh: true});
     } catch (error) {
       if (error) {
         Alert.alert('Error', error.response.data.error);

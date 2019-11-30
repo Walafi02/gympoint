@@ -27,6 +27,8 @@ export default function Helps({navigation}) {
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(null);
 
+  const refresh = navigation.getParam('refresh');
+
   async function loadHelps(page = 1, oldRequests = []) {
     setPages(page);
     try {
@@ -64,6 +66,13 @@ export default function Helps({navigation}) {
     setLoading(true);
     loadHelps();
   }, []);
+
+  useEffect(() => {
+    if (refresh) {
+      setLoading(true);
+      loadHelps();
+    }
+  }, [refresh]);
 
   function handleSelectHelp(help) {
     navigation.navigate('Response', {help});
@@ -126,5 +135,6 @@ export default function Helps({navigation}) {
 Helps.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
   }).isRequired,
 };
