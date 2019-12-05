@@ -9,14 +9,33 @@
 <blockquote align="center">“Mude você e todo o resto mudará naturalmente”!</blockquote>
 
 <p align="center">
-  <a href="#-sobre-o-desafio">Sobre o desafio</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-instalacao-e-execução">Instalação e execução</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-licença">Licença</a>
 </p>
 
+## 🚀 Tecnologias
 
-## 🚀 Sobre o desafio
+Esse projeto foi desenvolvido com as seguintes tecnologias:
+
+- [Node.js](https://nodejs.org/en/)
+- [React](https://reactjs.org)
+- [React Native](https://facebook.github.io/react-native/)
+
+## 💻 Projeto
 
 Durante esse projeto...
+
+## :hammer: Instalação e execução
+
+Faça um clone desse repositório
+
+### Frontend
+1. A partir da raiz do projeto, entre na pasta rodando `cd frontend`;
+2. Rode `yarn` para instalar as dependências;
+3. Rode `yarn start` para iniciar o servidor de desenvolvimento;
+4. Abra `http://localhost:3000` para ver o projeto no navegador.
 
 ## 📝 Licença
 
