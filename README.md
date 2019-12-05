@@ -27,15 +27,15 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 Durante esse projeto...
 
-## :hammer: Instalação e execução
+## 🚀 Instalação e execução
 
 Faça um clone desse repositório
 
-### Frontend
-1. A partir da raiz do projeto, entre na pasta rodando `cd frontend`;
-2. Rode `yarn` para instalar as dependências;
-3. Rode `yarn start` para iniciar o servidor de desenvolvimento;
-4. Abra `http://localhost:3000` para ver o projeto no navegador.
+  ### Frontend
+  1. A partir da raiz do projeto, entre na pasta rodando `cd frontend`;
+  2. Rode `yarn` para instalar as dependências;
+  3. Rode `yarn start` para iniciar o servidor de desenvolvimento;
+  4. Abra `http://localhost:3000` para ver o projeto no navegador.
 
 ## 📝 Licença
 
