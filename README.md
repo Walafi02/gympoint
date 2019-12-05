@@ -3,15 +3,16 @@
 </h1>
 
 <h3 align="center">
-  Gympoint, Frontend, Mobile e backend
+  Gympoint, Frontend, Mobile e Backend
 </h3>
 
 <blockquote align="center">“Mude você e todo o resto mudará naturalmente”!</blockquote>
 
 <p align="center">
-  <a href="#rocket-sobre-o-projeto">Sobre o projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-licença">Licença</a>
+  <a href="#sobre-o-projeto">Sobre o projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#licença">Licença</a>
 </p>
+
 
 ## Sobre o projeto
 
