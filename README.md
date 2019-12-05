@@ -9,12 +9,12 @@
 <blockquote align="center">“Mude você e todo o resto mudará naturalmente”!</blockquote>
 
 <p align="center">
-  <a href="#sobre-o-projeto">Sobre o projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#licença">Licença</a>
+  <a href="#rocket-sobre-o-desafio">Sobre o desafio</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-licença">Licença</a>
 </p>
 
 
-## Sobre o projeto
+## 🚀 Sobre o desafio
 
 Durante esse projeto...
 
