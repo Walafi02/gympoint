@@ -27,7 +27,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 Durante esse projeto...
 
-## :hammer: Instalação e execução
+## 🚀 Instalação e execução
 
 Faça um clone desse repositório
 
