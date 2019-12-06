@@ -4,17 +4,20 @@ import Student from '../models/Student';
 
 class StudentsController {
   async index(req, res) {
-    const { name } = req.query;
+    const { name, page = 1, paginate = 10 } = req.query;
     const { id } = req.params;
 
     const students = id
       ? await Student.findByPk(id)
-      : await Student.findAll({
+      : await Student.paginate({
           where: {
             name: {
               [Op.iLike]: `%${name || ''}%`,
             },
           },
+          page,
+          paginate,
+          order: [['updatedAt', 'DESC']],
         });
 
     if (id && students == null)
@@ -79,7 +82,6 @@ class StudentsController {
 
   async delete(req, res) {
     const { id } = req.params;
-    console.log(id);
 
     const student = await Student.findByPk(id);
 

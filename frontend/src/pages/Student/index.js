@@ -9,6 +9,7 @@ import Button from '~/components/Button';
 import Table from '~/components/Table';
 import SearchBar from '~/components/SearchBar';
 import Container from '~/components/Container';
+import Pagination from '~/components/Pagination';
 
 import api from '~/services/api';
 
@@ -17,8 +18,12 @@ export default function Student() {
 
   useEffect(() => {
     async function loadStudent() {
-      const response = await api.get('students');
-      setStudents(response.data);
+      const response = await api.get('students', {
+        params: {
+          page: 2,
+        },
+      });
+      setStudents(response.data.docs);
     }
 
     loadStudent();
@@ -66,44 +71,48 @@ export default function Student() {
       </Header>
 
       {students.length > 0 ? (
-        <Table template="4fr 4fr 2fr 1fr 1fr">
-          <thead>
-            <tr>
-              <th>NOME</th>
-              <th>E-MAIL</th>
-              <th>IDADE</th>
-              <th />
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {students.map(student => (
-              <tr key={String(student.id)}>
-                <td>{student.name}</td>
-                <td>{student.email}</td>
-                <td>{student.age || 'Não informado'}</td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    onClick={() => handleEdit(student.id)}
-                    className="edit"
-                  >
-                    editar
-                  </button>
-                </td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(student.id)}
-                    className="delete"
-                  >
-                    apagar
-                  </button>
-                </td>
+        <>
+          <Table template="4fr 4fr 2fr 1fr 1fr">
+            <thead>
+              <tr>
+                <th>NOME</th>
+                <th>E-MAIL</th>
+                <th>IDADE</th>
+                <th />
+                <th />
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {students.map(student => (
+                <tr key={String(student.id)}>
+                  <td>{student.name}</td>
+                  <td>{student.email}</td>
+                  <td>{student.age || 'Não informado'}</td>
+                  <td className="align-right">
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(student.id)}
+                      className="edit"
+                    >
+                      editar
+                    </button>
+                  </td>
+                  <td className="align-right">
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(student.id)}
+                      className="delete"
+                    >
+                      apagar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+
+          <Pagination />
+        </>
       ) : (
         <div className="text-center">
           <strong>Sem itens na lista</strong>
