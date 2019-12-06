@@ -18,6 +18,6 @@ export default async (req, res, next) => {
     req.user_id = decoded.id;
     return next();
   } catch (error) {
-    return res.status(400).json({ error: 'Token invalid' });
+    return res.status(401).json({ error: 'Token invalid' });
   }
 };
