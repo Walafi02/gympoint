@@ -15,17 +15,26 @@ import api from '~/services/api';
 
 export default function Student() {
   const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadStudent() {
+  async function loadStudent() {
+    setLoading(true);
+
+    try {
       const response = await api.get('students', {
         params: {
           page: 2,
         },
       });
       setStudents(response.data.docs);
+    } catch (error) {
+      console.tron.log(error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     loadStudent();
   }, []);
 
@@ -53,6 +62,7 @@ export default function Student() {
       }
     }
   }
+
   return (
     <Container>
       <Header>
@@ -111,7 +121,7 @@ export default function Student() {
             </tbody>
           </Table>
 
-          <Pagination />
+          <Pagination pages={1} loading={loading} />
         </>
       ) : (
         <div className="text-center">
