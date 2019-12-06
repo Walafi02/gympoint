@@ -65,20 +65,20 @@ export default function Student() {
         </div>
       </Header>
 
-      <Table template="4fr 4fr 2fr 1fr 1fr">
-        <thead>
-          <tr>
-            <th>NOME</th>
-            <th>E-MAIL</th>
-            <th>IDADE</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {students.length > 0 ? (
-            students.map(student => (
-              <tr>
+      {students.length > 0 ? (
+        <Table template="4fr 4fr 2fr 1fr 1fr">
+          <thead>
+            <tr>
+              <th>NOME</th>
+              <th>E-MAIL</th>
+              <th>IDADE</th>
+              <th />
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {students.map(student => (
+              <tr key={String(student.id)}>
                 <td>{student.name}</td>
                 <td>{student.email}</td>
                 <td>{student.age || 'Não informado'}</td>
@@ -101,12 +101,14 @@ export default function Student() {
                   </button>
                 </td>
               </tr>
-            ))
-          ) : (
-            <td className="text-center">Sem itens na lista</td>
-          )}
-        </tbody>
-      </Table>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <div className="text-center">
+          <strong>Sem itens na lista</strong>
+        </div>
+      )}
     </Container>
   );
 }

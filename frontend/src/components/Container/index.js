@@ -11,7 +11,8 @@ export default function Container({ children, maxWidth, minWidth }) {
 }
 
 Container.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array])
+    .isRequired,
   maxWidth: PropTypes.number,
   minWidth: PropTypes.number,
 };

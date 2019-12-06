@@ -42,7 +42,8 @@ module.exports = {
     "jsx-a11y/control-has-associated-label": "off",
     "react/require-default-props": "off",
     "no-alert": "off",
-    "radix": "off"
+    "radix": "off",
+    "react/forbid-prop-types": "off"
   },
   settings: {
     "import/resolver": {

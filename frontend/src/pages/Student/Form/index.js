@@ -14,8 +14,6 @@ import Container from '~/components/Container';
 import Field from '~/components/Field';
 import BodyForm from '~/components/BodyForm';
 
-// import { Container } from './styles';
-
 const schema = Yup.object().shape({
   name: Yup.string().required('O nome é obrigatorio'),
   email: Yup.string()
@@ -62,15 +60,8 @@ export default function StudentForm({ match }) {
   }
 
   async function handleSubmit({ name, email, age, weight, height }) {
-    console.tron.log({
-      name,
-      email,
-      age,
-      weight,
-      height,
-    });
     try {
-        const response = id // eslint-disable-line
+      const response = id // eslint-disable-line
         ? await api.put(`/students/${id}`, { name, email, age, weight, height })
         : await api.post('/students', { name, email, age, weight, height });
       toast.success('Aluno salvo com sucesso');
@@ -111,18 +102,31 @@ export default function StudentForm({ match }) {
           <Field>
             <Input label="NOME COMPLETO" name="name" />
           </Field>
+
           <Field>
             <Input label="ENDEREÇO DE E-MAIL" name="email" type="email" />
           </Field>
           <div>
             <Field>
-              <Input label="IDADE" name="age" type="number" />
+              <Input label="IDADE" name="age" type="number" min="0" />
             </Field>
             <Field>
-              <Input label="PESO (em kg)" name="weight" type="number" />
+              <Input
+                label="PESO (em kg)"
+                name="weight"
+                type="number"
+                min="0"
+                step="0.01"
+              />
             </Field>
             <Field>
-              <Input step="0.01" label="ALTURA" name="height" type="number" />
+              <Input
+                label="ALTURA"
+                name="height"
+                type="number"
+                min="0"
+                step="0.01"
+              />
             </Field>
           </div>
         </Form>

@@ -34,10 +34,6 @@ export default function HelpModal({
   help,
   handleSubmit,
 }) {
-  // async function handleSubmit({ answer }) {
-  //   console.tron.log(answer);
-  // }
-
   return (
     <Container>
       <Modal
@@ -65,5 +61,6 @@ export default function HelpModal({
 HelpModal.propTypes = {
   modalIsOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  help: PropTypes.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  help: PropTypes.object.isRequired,
 };

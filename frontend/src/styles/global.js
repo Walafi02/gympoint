@@ -39,4 +39,8 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  .text-center {
+    text-align: center;
+  }
 `;

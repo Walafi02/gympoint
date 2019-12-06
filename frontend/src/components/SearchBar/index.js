@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 export default function SearchBar({ Icon, handleSearch }) {
   return (
-    <Container for="search">
+    <Container htmlFor="search">
       <Icon size={24} color="#aaa" />
       <input type="text" name="search" onKeyUp={handleSearch} />
     </Container>
@@ -12,6 +12,6 @@ export default function SearchBar({ Icon, handleSearch }) {
 }
 
 SearchBar.propTypes = {
-  Icon: PropTypes.element.isRequired,
+  Icon: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   handleSearch: PropTypes.func.isRequired,
 };

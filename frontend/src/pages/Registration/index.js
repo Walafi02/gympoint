@@ -75,21 +75,21 @@ export default function Registration() {
         </div>
       </Header>
 
-      <Table template="3fr 3fr 3fr 3fr 1fr 1fr 1fr">
-        <thead>
-          <tr>
-            <th>ALUNO</th>
-            <th>PLANO</th>
-            <th>INÌCIO</th>
-            <th>TERMINO</th>
-            <th>ATIVA</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {registrations.length > 0 ? (
-            registrations.map(registration => (
+      {registrations.length > 0 ? (
+        <Table template="3fr 3fr 3fr 3fr 1fr 1fr 1fr">
+          <thead>
+            <tr>
+              <th>ALUNO</th>
+              <th>PLANO</th>
+              <th>INÌCIO</th>
+              <th>TERMINO</th>
+              <th>ATIVA</th>
+              <th />
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {registrations.map(registration => (
               <tr key={registration.id}>
                 <td>{registration.student.name}</td>
                 <td>{registration.plan.title}</td>
@@ -120,12 +120,14 @@ export default function Registration() {
                   </button>
                 </td>
               </tr>
-            ))
-          ) : (
-            <td className="text-center">Sem itens na lista</td>
-          )}
-        </tbody>
-      </Table>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <div className="text-center">
+          <strong>Sem itens na lista</strong>
+        </div>
+      )}
     </Container>
   );
 }

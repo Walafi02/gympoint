@@ -33,6 +33,10 @@ export const Container = styled.table`
     background: #f5f5f5;
   }
 
+  tbody tr.empty-row:hover {
+    background: none;
+  }
+
   button {
     background: transparent;
     border: 0;
@@ -44,9 +48,5 @@ export const Container = styled.table`
     &.delete {
       color: #de3b3b;
     }
-  }
-
-  .text-center {
-    text-align: center;
   }
 `;

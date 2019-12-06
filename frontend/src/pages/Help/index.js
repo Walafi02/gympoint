@@ -3,12 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import api from '~/services/api';
 
+import ReactModal from './ReactModal';
 import Header from '~/components/HeaderView';
 import Table from '~/components/Table';
 import Container from '~/components/Container';
-// import { Container } from './styles';
-
-import ReactModal from './ReactModal';
 
 export default function Help() {
   const [helps, setHelps] = useState([]);
@@ -63,16 +61,17 @@ export default function Help() {
         help={helpSelected}
         handleSubmit={handleSubmit}
       />
-      <Table template="4fr 1fr">
-        <thead>
-          <tr>
-            <th>ALUNO</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {helps.length > 0 ? (
-            helps.map(help => (
+
+      {helps.length > 0 ? (
+        <Table template="4fr 1fr">
+          <thead>
+            <tr>
+              <th>ALUNO</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {helps.map(help => (
               <tr>
                 <td>{help.student.name}</td>
                 <td className="align-right">
@@ -85,12 +84,14 @@ export default function Help() {
                   </button>
                 </td>
               </tr>
-            ))
-          ) : (
-            <td className="text-center">Sem itens na lista</td>
-          )}
-        </tbody>
-      </Table>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <div className="text-center">
+          <strong>Sem itens na lista</strong>
+        </div>
+      )}
     </Container>
   );
 }

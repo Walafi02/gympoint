@@ -12,8 +12,6 @@ import Button from '~/components/Button';
 import Table from '~/components/Table';
 import Container from '~/components/Container';
 
-// import { Container } from './styles';
-
 export default function Plan() {
   const [plans, setPlans] = useState([]);
 
@@ -68,20 +66,20 @@ export default function Plan() {
         </div>
       </Header>
 
-      <Table template="6fr 3fr 3fr 1fr 1fr">
-        <thead>
-          <tr>
-            <th>TÍTULO</th>
-            <th>DURAÇÂO</th>
-            <th>VALOR p/ MÊS</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
+      {plans.length > 0 ? (
+        <Table template="6fr 3fr 3fr 1fr 1fr">
+          <thead>
+            <tr>
+              <th>TÍTULO</th>
+              <th>DURAÇÂO</th>
+              <th>VALOR p/ MÊS</th>
+              <th />
+              <th />
+            </tr>
+          </thead>
 
-        <tbody>
-          {plans.length > 0 ? (
-            plans.map(plan => (
+          <tbody>
+            {plans.map(plan => (
               <tr key={plan.id}>
                 <td>{plan.title}</td>
                 <td>{plan.formatDuration}</td>
@@ -105,12 +103,14 @@ export default function Plan() {
                   </button>
                 </td>
               </tr>
-            ))
-          ) : (
-            <td className="text-center">Sem itens na lista</td>
-          )}
-        </tbody>
-      </Table>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <div className="text-center">
+          <strong>Sem itens na lista</strong>
+        </div>
+      )}
     </Container>
   );
 }
