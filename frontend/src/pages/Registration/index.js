@@ -5,21 +5,35 @@ import { toast } from 'react-toastify';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
+import history from '~/services/history';
+import api from '~/services/api';
+
 import Header from '~/components/HeaderView';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
 import Container from '~/components/Container';
-
-import history from '~/services/history';
-import api from '~/services/api';
+import Pagination from '~/components/Pagination';
 
 export default function Registration() {
   const [registrations, setRegistrations] = useState([]);
-  useEffect(() => {
-    async function loadRegistrations() {
-      const response = await api.get('registration');
+  const [currentPage, setCurrentPage] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function loadRegistrations(page = 1) {
+    setLoading(true);
+    setCurrentPage(page);
+
+    try {
+      const { data } = await api.get('registration', {
+        params: {
+          page,
+          paginate: 3,
+        },
+      });
+
       setRegistrations(
-        response.data.map(reg => ({
+        data.docs.map(reg => ({
           ...reg,
           format_start_date: format(
             parseISO(reg.start_date),
@@ -37,7 +51,17 @@ export default function Registration() {
           ),
         }))
       );
+      setTotalPages(data.pages);
+    } catch (error) {
+      toast.error(
+        error.response.data.error || 'Error, verifique suas permissões'
+      );
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     loadRegistrations();
   }, []);
 
@@ -51,7 +75,11 @@ export default function Registration() {
     if (r === true) {
       try {
         await api.delete(`/registration/${id}`);
-        setRegistrations(registrations.filter(item => item.id !== id));
+        loadRegistrations(
+          registrations.length === 1 && currentPage > 1
+            ? currentPage - 1
+            : currentPage
+        );
         toast.success(`Sucesso deletar matricula para ${student.name}.`);
       } catch (error) {
         toast.error(`Error ao deletar matricula.`);
@@ -75,59 +103,63 @@ export default function Registration() {
         </div>
       </Header>
 
-      {registrations.length > 0 ? (
-        <Table template="3fr 3fr 3fr 3fr 1fr 1fr 1fr">
-          <thead>
-            <tr>
-              <th>ALUNO</th>
-              <th>PLANO</th>
-              <th>INÌCIO</th>
-              <th>TERMINO</th>
-              <th>ATIVA</th>
-              <th />
-              <th />
+      <Table
+        template="3fr 3fr 3fr 3fr 1fr 1fr 1fr"
+        countRows={registrations.length}
+      >
+        <thead>
+          <tr>
+            <th>ALUNO</th>
+            <th>PLANO</th>
+            <th>INÌCIO</th>
+            <th>TERMINO</th>
+            <th>ATIVA</th>
+            <th />
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {registrations.map(registration => (
+            <tr key={registration.id}>
+              <td>{registration.student.name}</td>
+              <td>{registration.plan.title}</td>
+              <td>{registration.format_start_date}</td>
+              <td>{registration.format_end_date}</td>
+              <td>
+                <MdCheckCircle
+                  size={24}
+                  color={registration.active ? '#42cb59' : '#dddddd'}
+                />
+              </td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  className="edit"
+                  onClick={() => handleEdit(registration.id)}
+                >
+                  editar
+                </button>
+              </td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  className="delete"
+                  onClick={() => handleDelete(registration.id)}
+                >
+                  apagar
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {registrations.map(registration => (
-              <tr key={registration.id}>
-                <td>{registration.student.name}</td>
-                <td>{registration.plan.title}</td>
-                <td>{registration.format_start_date}</td>
-                <td>{registration.format_end_date}</td>
-                <td>
-                  <MdCheckCircle
-                    size={24}
-                    color={registration.active ? '#42cb59' : '#dddddd'}
-                  />
-                </td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    className="edit"
-                    onClick={() => handleEdit(registration.id)}
-                  >
-                    editar
-                  </button>
-                </td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    className="delete"
-                    onClick={() => handleDelete(registration.id)}
-                  >
-                    apagar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      ) : (
-        <div className="text-center">
-          <strong>Sem itens na lista</strong>
-        </div>
-      )}
+          ))}
+        </tbody>
+      </Table>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loading={loading}
+        loadItens={loadRegistrations}
+      />
     </Container>
   );
 }

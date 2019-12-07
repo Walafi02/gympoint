@@ -10,12 +10,13 @@ import WelcomeStudent from '../../jobs/WelcomeStudent';
 class RegistrationController {
   async index(req, res) {
     const { id } = req.params;
+    const { page = 1, paginate = 10 } = req.query;
 
     const registration = id
       ? await Registration.findByPk(id, {
           attributes: ['id', 'start_date', 'end_date', 'plan_id', 'student_id'],
         })
-      : await Registration.findAll({
+      : await Registration.paginate({
           where: {
             user_id: req.user_id,
           },
@@ -32,10 +33,13 @@ class RegistrationController {
               attributes: ['title'],
             },
           ],
+          page,
+          paginate,
         });
 
     if (id && registration == null)
       return res.status(401).json({ error: 'ID not found' });
+
     return res.json(registration);
   }
 
@@ -108,19 +112,11 @@ class RegistrationController {
 
     const { student_id, plan_id } = req.body;
 
-    /**
-     * validation student
-     */
-
     const student = await Student.findByPk(student_id);
 
     if (student_id && !student) {
       return res.status(400).json({ error: 'Student does not exist' });
     }
-
-    /**
-     * validation plan
-     */
 
     const plans = await Plans.findByPk(plan_id);
 

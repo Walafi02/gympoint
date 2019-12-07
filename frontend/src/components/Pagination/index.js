@@ -12,11 +12,11 @@ export default function Pagination({
   loadItens,
 }) {
   function handlePrev() {
-    loadItens(1);
+    loadItens(currentPage - 1);
   }
 
   function handleNext() {
-    loadItens(2);
+    loadItens(currentPage + 1);
   }
 
   return (

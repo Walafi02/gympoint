@@ -1,5 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 import { addMonths, isBefore, isAfter } from 'date-fns';
+import SequelizePaginate from 'sequelize-paginate';
 
 import Plans from './Plans';
 
@@ -50,4 +51,5 @@ class Registration extends Model {
   }
 }
 
+SequelizePaginate.paginate(Registration);
 export default Registration;
