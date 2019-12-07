@@ -7,17 +7,38 @@ import ReactModal from './ReactModal';
 import Header from '~/components/HeaderView';
 import Table from '~/components/Table';
 import Container from '~/components/Container';
+import Pagination from '~/components/Pagination';
 
 export default function Help() {
   const [helps, setHelps] = useState([]);
   const [helpSelected, setHelpSelected] = useState({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function loadingHelp(page = 1) {
+    setLoading(true);
+    setCurrentPage(page);
+
+    try {
+      const { data } = await api.get('students/help-orders', {
+        params: {
+          page,
+        },
+      });
+      setHelps(data.docs);
+      setTotalPages(data.pages);
+    } catch (error) {
+      toast.error(
+        error.response.data.error || 'Error, verifique suas permissões'
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function loadingHelp() {
-      const response = await api.get('students/help-orders');
-      setHelps(response.data);
-    }
     loadingHelp();
   }, []);
 
@@ -40,14 +61,15 @@ export default function Help() {
   async function handleSubmit({ answer }) {
     const { id, student } = helpSelected;
     try {
-      api.post(`/help-orders/${id}/answer`, { answer });
-      setHelps(helps.filter(item => item.id !== id));
+      await api.post(`/help-orders/${id}/answer`, { answer });
+      loadingHelp(helps.length === 1 && currentPage > 1 ? currentPage - 1 : 1);
       setModalIsOpen(false);
       toast.success(`Sucesso ao response o aluno(a) ${student}`);
     } catch (error) {
-      toast.success(`Error ao responder o aluno(a) ${student}`);
+      toast.error(
+        error.response.data.error || 'Error, veriique suas permissões'
+      );
     }
-    console.tron.log(answer);
   }
 
   return (
@@ -62,36 +84,37 @@ export default function Help() {
         handleSubmit={handleSubmit}
       />
 
-      {helps.length > 0 ? (
-        <Table template="4fr 1fr">
-          <thead>
-            <tr>
-              <th>ALUNO</th>
-              <th />
+      <Table template="4fr 1fr" countRows={helps.length}>
+        <thead>
+          <tr>
+            <th>ALUNO</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {helps.map(help => (
+            <tr key={String(help.id)}>
+              <td>{help.student.name}</td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  className="edit"
+                  onClick={() => openModal(help.id)}
+                >
+                  responder
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {helps.map(help => (
-              <tr>
-                <td>{help.student.name}</td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    className="edit"
-                    onClick={() => openModal(help.id)}
-                  >
-                    responder
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      ) : (
-        <div className="text-center">
-          <strong>Sem itens na lista</strong>
-        </div>
-      )}
+          ))}
+        </tbody>
+      </Table>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loading={loading}
+        loadItens={loadingHelp}
+      />
     </Container>
   );
 }

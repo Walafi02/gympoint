@@ -8,7 +8,9 @@ import Student from '../models/Student';
 
 class HelpResponseController {
   async index(req, res) {
-    const helpOrder = await HelpOrder.findAll({
+    const { page = 1, paginate = 10 } = req.query;
+
+    const helpOrder = await HelpOrder.paginate({
       where: {
         answer: null,
       },
@@ -20,6 +22,9 @@ class HelpResponseController {
           attributes: ['name'],
         },
       ],
+      page,
+      paginate,
+      order: [['createdAt', 'ASC']],
     });
 
     return res.json(helpOrder);

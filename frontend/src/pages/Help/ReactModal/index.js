@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
@@ -34,6 +34,10 @@ export default function HelpModal({
   help,
   handleSubmit,
 }) {
+  useEffect(() => {
+    Modal.setAppElement('body');
+  }, []);
+
   return (
     <Container>
       <Modal

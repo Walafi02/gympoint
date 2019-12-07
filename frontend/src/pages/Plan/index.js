@@ -11,15 +11,27 @@ import Header from '~/components/HeaderView';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
 import Container from '~/components/Container';
+import Pagination from '~/components/Pagination';
 
 export default function Plan() {
   const [plans, setPlans] = useState([]);
+  const [currentPage, setCurrentPage] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadPlans() {
-      const response = await api.get('plans');
+  async function loadPlans(page = 1) {
+    setLoading(true);
+    setCurrentPage(page);
+
+    try {
+      const { data } = await api.get('plans', {
+        params: {
+          page,
+        },
+      });
+
       setPlans(
-        response.data.map(plan => ({
+        data.docs.map(plan => ({
           ...plan,
           formatDuration: `${plan.duration} ${
             plan.duration > 1 ? 'meses' : 'mês'
@@ -27,10 +39,20 @@ export default function Plan() {
           formatPrice: formatPrice(plan.price),
         }))
       );
+      setTotalPages(data.pages);
+    } catch (error) {
+      toast.error(
+        error.response.data.error ||
+          'Error na criação, verifique suas permissões'
+      );
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     loadPlans();
-  }, []);
+  }, []); // eslint-disable-line
 
   function handleEdit(id) {
     history.push(`/plan/edit/${id}`);
@@ -42,10 +64,10 @@ export default function Plan() {
     if (r === true) {
       try {
         await api.delete(`/plans/${id}`);
-        setPlans(plans.filter(item => item.id !== id));
+        loadPlans(plans.length === 1 && currentPage > 1 ? currentPage - 1 : 1);
         toast.success(`Sucesso ao deleta o plano ${title}.`);
       } catch (error) {
-        toast.error(`Error ao deletar plano.`);
+        toast.error(error.response.data.error || 'Error ao deletar plano.');
       }
     }
   }
@@ -66,51 +88,52 @@ export default function Plan() {
         </div>
       </Header>
 
-      {plans.length > 0 ? (
-        <Table template="6fr 3fr 3fr 1fr 1fr">
-          <thead>
-            <tr>
-              <th>TÍTULO</th>
-              <th>DURAÇÂO</th>
-              <th>VALOR p/ MÊS</th>
-              <th />
-              <th />
-            </tr>
-          </thead>
+      <Table template="6fr 3fr 3fr 1fr 1fr" countRows={plans.length}>
+        <thead>
+          <tr>
+            <th>TÍTULO</th>
+            <th>DURAÇÂO</th>
+            <th>VALOR p/ MÊS</th>
+            <th />
+            <th />
+          </tr>
+        </thead>
 
-          <tbody>
-            {plans.map(plan => (
-              <tr key={plan.id}>
-                <td>{plan.title}</td>
-                <td>{plan.formatDuration}</td>
-                <td>{plan.formatPrice}</td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    onClick={() => handleEdit(plan.id)}
-                    className="edit"
-                  >
-                    editar
-                  </button>
-                </td>
-                <td className="align-right">
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(plan.id)}
-                    className="delete"
-                  >
-                    apagar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      ) : (
-        <div className="text-center">
-          <strong>Sem itens na lista</strong>
-        </div>
-      )}
+        <tbody>
+          {plans.map(plan => (
+            <tr key={plan.id}>
+              <td>{plan.title}</td>
+              <td>{plan.formatDuration}</td>
+              <td>{plan.formatPrice}</td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  onClick={() => handleEdit(plan.id)}
+                  className="edit"
+                >
+                  editar
+                </button>
+              </td>
+              <td className="align-right">
+                <button
+                  type="button"
+                  onClick={() => handleDelete(plan.id)}
+                  className="delete"
+                >
+                  apagar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loading={loading}
+        loadItens={loadPlans}
+      />
     </Container>
   );
 }

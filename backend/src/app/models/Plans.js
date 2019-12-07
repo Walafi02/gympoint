@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import SequelizePaginate from 'sequelize-paginate';
 
 class Plans extends Model {
   static init(sequelize) {
@@ -21,4 +22,5 @@ class Plans extends Model {
   }
 }
 
+SequelizePaginate.paginate(Plans);
 export default Plans;

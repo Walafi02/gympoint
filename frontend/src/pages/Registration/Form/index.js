@@ -50,7 +50,7 @@ export default function RegistrationForm({ match }) {
   async function loadStudents() {
     const response = await api.get('students');
     setStudents(
-      response.data.map(student => ({ id: student.id, title: student.name }))
+      response.data.docs.map(student => ({ id: student.id, title: student.name }))
     );
   }
 

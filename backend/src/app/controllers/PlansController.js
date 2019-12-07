@@ -4,19 +4,18 @@ import Plans from '../models/Plans';
 
 class PlansController {
   async index(req, res) {
-    const { page = 1 } = req.query;
-
     const { id } = req.params;
+    const { page = 1, paginate = 10 } = req.query;
 
     const plans = id
       ? await Plans.findByPk(id)
-      : await Plans.findAll({
+      : await Plans.paginate({
           where: {
             user_id: req.user_id,
           },
-          limit: 20,
-          offset: (page - 1) * 20,
-          order: ['id'],
+          page,
+          paginate,
+          order: [['updatedAt', 'DESC']],
         });
 
     if (id && plans == null)

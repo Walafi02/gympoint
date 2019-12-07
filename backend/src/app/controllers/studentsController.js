@@ -4,8 +4,8 @@ import Student from '../models/Student';
 
 class StudentsController {
   async index(req, res) {
-    const { name, page = 1, paginate = 10 } = req.query;
     const { id } = req.params;
+    const { name, page = 1, paginate = 10 } = req.query;
 
     const students = id
       ? await Student.findByPk(id)
