@@ -57,7 +57,9 @@ export default function Student() {
       try {
         await api.delete(`/students/${id}`);
         loadStudent(
-          students.length === 1 && currentPage > 1 ? currentPage - 1 : 1
+          students.length === 1 && currentPage > 1
+            ? currentPage - 1
+            : currentPage
         );
         toast.success(`Sucesso ao deletar ${name}.`);
       } catch (error) {

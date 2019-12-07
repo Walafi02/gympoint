@@ -62,7 +62,9 @@ export default function Help() {
     const { id, student } = helpSelected;
     try {
       await api.post(`/help-orders/${id}/answer`, { answer });
-      loadingHelp(helps.length === 1 && currentPage > 1 ? currentPage - 1 : 1);
+      loadingHelp(
+        helps.length === 1 && currentPage > 1 ? currentPage - 1 : currentPage
+      );
       setModalIsOpen(false);
       toast.success(`Sucesso ao response o aluno(a) ${student}`);
     } catch (error) {

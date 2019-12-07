@@ -64,7 +64,9 @@ export default function Plan() {
     if (r === true) {
       try {
         await api.delete(`/plans/${id}`);
-        loadPlans(plans.length === 1 && currentPage > 1 ? currentPage - 1 : 1);
+        loadPlans(
+          plans.length === 1 && currentPage > 1 ? currentPage - 1 : currentPage
+        );
         toast.success(`Sucesso ao deleta o plano ${title}.`);
       } catch (error) {
         toast.error(error.response.data.error || 'Error ao deletar plano.');
