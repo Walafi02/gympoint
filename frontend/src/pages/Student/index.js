@@ -15,18 +15,25 @@ import api from '~/services/api';
 
 export default function Student() {
   const [students, setStudents] = useState([]);
+  const [name, setName] = useState('');
+  const [currentPage, setCurrentPage] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  async function loadStudent() {
+  async function loadStudent(page = 1, paginate = 5) {
     setLoading(true);
+    setCurrentPage(page);
 
     try {
-      const response = await api.get('students', {
+      const { data } = await api.get('students', {
         params: {
-          page: 2,
+          name,
+          page,
+          paginate,
         },
       });
-      setStudents(response.data.docs);
+      setStudents(data.docs);
+      setTotalPages(data.pages);
     } catch (error) {
       console.tron.log(error);
     } finally {
@@ -36,26 +43,21 @@ export default function Student() {
 
   useEffect(() => {
     loadStudent();
-  }, []);
-
-  async function handleSearchUser(e) {
-    if (e.keyCode === 13) {
-      console.tron.log(e.target.value);
-    }
-  }
+  }, [name]); // eslint-disable-line
 
   function handleEdit(id) {
     history.push(`/student/edit/${id}`);
   }
 
   async function handleDelete(id) {
-    const { name } = students.find(p => p.id === parseInt(id));
-    const r = window.confirm(`Deseja deletar ${name}?`);
+    const student = students.find(p => p.id === parseInt(id));
+    const r = window.confirm(`Deseja deletar ${student.name}?`);
     if (r === true) {
       try {
         await api.delete(`/students/${id}`);
-        setStudents(students.filter(item => item.id !== id));
-
+        loadStudent(
+          students.length === 1 && currentPage > 1 ? currentPage - 1 : 1
+        );
         toast.success(`Sucesso ao deletar ${name}.`);
       } catch (error) {
         toast.error(`Error ao deletar studante.`);
@@ -76,7 +78,11 @@ export default function Student() {
               styledType="primary"
             />
           </Link>
-          <SearchBar Icon={MdSearch} handleSearch={handleSearchUser} />
+          <SearchBar
+            Icon={MdSearch}
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
         </div>
       </Header>
 
@@ -121,7 +127,12 @@ export default function Student() {
             </tbody>
           </Table>
 
-          <Pagination pages={1} loading={loading} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            loading={loading}
+            loadItens={loadStudent}
+          />
         </>
       ) : (
         <div className="text-center">

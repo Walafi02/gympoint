@@ -5,16 +5,37 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 import { Container } from './styles';
 
-export default function Pagination({ pages, loading }) {
+export default function Pagination({
+  currentPage,
+  totalPages,
+  loading,
+  loadItens,
+}) {
+  function handlePrev() {
+    loadItens(1);
+  }
+
+  function handleNext() {
+    loadItens(2);
+  }
+
   return (
     <>
-      {pages > 1 && (
+      {totalPages > 1 && (
         <Container>
-          <button type="button" disabled={loading}>
+          <button
+            type="button"
+            disabled={currentPage === 1 || loading}
+            onClick={handlePrev}
+          >
             <MdKeyboardArrowLeft />
           </button>
-          <strong>0</strong>
-          <button type="button" disabled={loading}>
+          <strong>{currentPage}</strong>
+          <button
+            type="button"
+            disabled={currentPage === totalPages || loading}
+            onClick={handleNext}
+          >
             <MdKeyboardArrowRight />
           </button>
         </Container>
@@ -24,11 +45,14 @@ export default function Pagination({ pages, loading }) {
 }
 
 Pagination.propTypes = {
-  pages: PropTypes.number,
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number,
   loading: PropTypes.bool,
+  loadItens: PropTypes.func,
 };
 
 Pagination.defaultProps = {
+  currentPage: 0,
+  totalPages: 0,
   loading: false,
-  pages: 0,
 };

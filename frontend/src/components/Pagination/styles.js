@@ -15,6 +15,11 @@ export const Container = styled.div`
     margin: 8px;
   }
 
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
   button:hover {
     opacity: 0.8;
   }
