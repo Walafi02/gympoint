@@ -16,6 +16,7 @@ import Button from '~/components/Button';
 import Container from '~/components/Container';
 import Field from '~/components/Field';
 import Datepicker from '~/components/Datepicker';
+import ReactSelect from '~/components/ReactSelect';
 
 const schema = Yup.object().shape({
   start_date: Yup.date()
@@ -30,9 +31,8 @@ const schema = Yup.object().shape({
 });
 
 export default function RegistrationForm({ match }) {
-  const [plans, setPlans] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [endDate, setEndDate] = useState('');
+  const [plan, setPlan] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [price, setPrice] = useState('');
   const [registration, setRegistration] = useState({
     start_date: null,
@@ -42,24 +42,27 @@ export default function RegistrationForm({ match }) {
 
   const { id } = match.params;
 
-  async function loadPlans() {
-    const response = await api.get('plans');
-    setPlans(response.data);
-  }
+  // async function loadPlans() {
+  //   const { data } = await api.get('plans');
+  //   setPlans(data.docs);
+  // }
 
-  async function loadStudents() {
-    const response = await api.get('students');
-    setStudents(
-      response.data.docs.map(student => ({ id: student.id, title: student.name }))
-    );
-  }
+  // async function loadStudents() {
+  //   const { data } = await api.get('students');
+  // setStudents(
+  //     data.docs.map(student => ({
+  //       id: student.id,
+  //       title: student.name,
+  //     }))
+  //   );
+  // }
 
   async function getRegistration() {
     try {
-      const response = await api.get(`/registration/${id}`);
+      const { data } = await api.get(`/registration/${id}`);
       setRegistration({
-        ...response.data,
-        start_date: parseISO(response.data.start_date),
+        ...data,
+        start_date: parseISO(data.start_date),
       });
     } catch (error) {
       toast.error('Error ao buscar o matrícula, verifique suas permissões');
@@ -67,47 +70,77 @@ export default function RegistrationForm({ match }) {
     }
   }
 
+  async function getStudent(student_id, setName) {
+    const { data } = await api.get(`students/${student_id}`);
+    setName(data.name);
+  }
+
+  async function getPlan(plan_id, setName) {
+    const { data } = await api.get(`plans/${plan_id}`);
+    setPlan(data);
+    setName(data.title);
+  }
+
+  async function loadStudents(inputValue) {
+    const { data } = await api.get('students', {
+      params: {
+        name: inputValue,
+      },
+    });
+
+    return data.docs;
+  }
+
+  async function loadPlans(inputValue) {
+    const { data } = await api.get('plans', {
+      params: {
+        title: inputValue,
+      },
+    });
+
+    return data.docs;
+  }
+
   useEffect(() => {
-    loadPlans();
-    loadStudents();
-    if (id) {
-      getRegistration();
-    }
+    if (id) getRegistration();
   }, []); // eslint-disable-line
 
   useEffect(() => {
     const { plan_id, start_date } = registration;
 
-    if (plan_id !== null && start_date !== null) {
-      const plan = plans.find(p => p.id === parseInt(plan_id)); // eslint-disable-line
+    // console.log('registration', registration);
+    console.log('plan', plan);
+
+    if (plan && plan.duration && plan.price && start_date !== null) {
+      //   // const plan = plans.find(p => p.id === parseInt(plan_id)); // eslint-disable-line
       setPrice(formatPrice(plan.duration * plan.price));
       setEndDate(format(addMonths(start_date, plan.duration), 'dd/MM/yyyy'));
     } else {
       setPrice(formatPrice(0));
       setEndDate('');
     }
-  }, [registration]);// eslint-disable-line
+  }, [registration, plan]);// eslint-disable-line
 
   function handleGoBack() {
     history.push(`/registration`);
   }
 
   async function handleSubmit({ student_id, plan_id, start_date }) {
-    console.tron.log({
+    console.log({
       student_id,
       plan_id,
       start_date,
     });
-    try {
-      const data = { student_id, plan_id, start_date };
-      const response = id // eslint-disable-line
-        ? await api.put(`/registration/${id}`, data)
-        : await api.post('/registration', data);
-      toast.success('Plano salvo com sucesso');
-      history.push(`/registration`);
-    } catch (error) {
-      toast.error('Error ao salvar o plano, verifique suas permissões');
-    }
+    // try {
+    //   const data = { student_id, plan_id, start_date };
+    //   const response = id // eslint-disable-line
+    //     ? await api.put(`/registration/${id}`, data)
+    //     : await api.post('/registration', data);
+    //   toast.success('Plano salvo com sucesso');
+    //   history.push(`/registration`);
+    // } catch (error) {
+    //   toast.error('Error ao salvar o plano, verifique suas permissões');
+    // }
   }
 
   return (
@@ -139,33 +172,21 @@ export default function RegistrationForm({ match }) {
           schema={schema}
         >
           <Field>
-            <Select
+            <ReactSelect
               label="aluno"
               name="student_id"
-              value={registration.student_id}
-              onChange={value =>
-                setRegistration({
-                  ...registration,
-                  student_id: value.target.value,
-                })
-              }
-              options={students}
+              loadInputValue={getStudent}
+              loadOptions={loadStudents}
             />
           </Field>
-
           <div>
             <Field>
-              <Select
+              <ReactSelect
                 label="Plano"
                 name="plan_id"
-                value={registration.plan_id}
-                onChange={value =>
-                  setRegistration({
-                    ...registration,
-                    plan_id: value.target.value,
-                  })
-                }
-                options={plans}
+                loadInputValue={getPlan}
+                loadOptions={loadPlans}
+                // onChange={e => setPlan(e)}
               />
             </Field>
             <Field>

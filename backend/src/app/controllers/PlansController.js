@@ -1,17 +1,21 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Plans from '../models/Plans';
 
 class PlansController {
   async index(req, res) {
     const { id } = req.params;
-    const { page = 1, paginate = 10 } = req.query;
+    const { title = '', page = 1, paginate = 10 } = req.query;
 
     const plans = id
       ? await Plans.findByPk(id)
       : await Plans.paginate({
           where: {
             user_id: req.user_id,
+            title: {
+              [Op.iLike]: `%${title}%`,
+            },
           },
           page,
           paginate,

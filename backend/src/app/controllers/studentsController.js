@@ -5,14 +5,14 @@ import Student from '../models/Student';
 class StudentsController {
   async index(req, res) {
     const { id } = req.params;
-    const { name, page = 1, paginate = 10 } = req.query;
+    const { name = '', page = 1, paginate = 10 } = req.query;
 
     const students = id
       ? await Student.findByPk(id)
       : await Student.paginate({
           where: {
             name: {
-              [Op.iLike]: `%${name || ''}%`,
+              [Op.iLike]: `%${name}%`,
             },
           },
           page,
