@@ -55,8 +55,8 @@ export default function FormPlan({ match }) {
   useEffect(() => {
     async function getPlan() {
       try {
-        const response = await api.get(`/plans/${id}`);
-        setPlan(response.data);
+        const { data } = await api.get(`/plans/${id}`);
+        setPlan(data);
       } catch (error) {
         toast.error('Error ao buscar o plano, verifique suas permissões');
         history.push(`/plan`);

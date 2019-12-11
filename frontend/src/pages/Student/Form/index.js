@@ -44,8 +44,8 @@ export default function StudentForm({ match }) {
   useEffect(() => {
     async function getStudent() {
       try {
-        const response = await api.get(`/students/${id}`);
-        setStudent(response.data);
+        const { data } = await api.get(`/students/${id}`);
+        setStudent(data);
       } catch (error) {
         toast.error('Error ao buscar o plano, verifique suas permissões');
         history.push(`/student`);
