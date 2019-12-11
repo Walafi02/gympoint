@@ -43,7 +43,8 @@ module.exports = {
     "react/require-default-props": "off",
     "no-alert": "off",
     "radix": "off",
-    "react/forbid-prop-types": "off"
+    "react/forbid-prop-types": "off",
+    "no-unused-expressions": "off"
   },
   settings: {
     "import/resolver": {

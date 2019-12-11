@@ -24,17 +24,48 @@ export const Container = styled.div`
     font-size: 12px;
   }
 
-  input,
-  select {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    height: 40px;
+  > input,
+  > div > div > input {
     padding: 7px 10px;
-    font-size: 12px;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0 !important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    box-sizing: border-box;
   }
 
-  select {
-    background: #fff;
+  > div > div {
     cursor: pointer;
+  }
+
+  input:focus {
+    border: 2px solid #2684ff;
+  }
+
+  input:disabled {
+    background: rgba(0, 0, 0, 0.1);
+    cursor: not-allowed;
   }
 `;
