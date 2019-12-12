@@ -28,7 +28,6 @@ export default function Registration() {
       const { data } = await api.get('registration', {
         params: {
           page,
-          paginate: 3,
         },
       });
 
