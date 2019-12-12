@@ -35,6 +35,7 @@ class RegistrationController {
           ],
           page,
           paginate,
+          order: [['updatedAt', 'DESC']],
         });
 
     if (id && registration == null)
@@ -76,8 +77,6 @@ class RegistrationController {
       return res.status(400).json({ error: 'Plan does not exist' });
     }
 
-    // return res.json(WelcomeStudent.key);
-
     const registration = await Registration.create({
       user_id: req.user_id,
       student_id,
@@ -101,10 +100,9 @@ class RegistrationController {
       return res.status(400).json({ error: 'Validations fails' });
     }
 
-    const registration = await Registration.findOne({
-      id: req.params.id_registration,
-      user_id: req.user_id,
-    });
+    const registration = await Registration.findByPk(
+      req.params.id_registration
+    );
 
     if (!registration) {
       return res.status(400).json({ error: 'Registration does not exist' });
@@ -130,10 +128,9 @@ class RegistrationController {
   }
 
   async delete(req, res) {
-    const registration = await Registration.findOne({
-      id: req.params.id_registration,
-      user_id: req.user_id,
-    });
+    const registration = await Registration.findByPk(
+      req.params.id_registration
+    );
 
     if (!registration) {
       return res.status(400).json({ error: 'Registration does not exist' });

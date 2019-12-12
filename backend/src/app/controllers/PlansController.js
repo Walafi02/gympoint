@@ -64,12 +64,7 @@ class PlansController {
       return res.status(400).json({ error: 'Validations fails' });
     }
 
-    const plan = await Plans.findOne({
-      where: {
-        id: id_plan,
-        user_id: req.user_id,
-      },
-    });
+    const plan = await Plans.findByPk(id_plan);
 
     if (!plan) {
       return res.status(401).json({ error: 'Plan does not exist' });
@@ -83,12 +78,7 @@ class PlansController {
   async delete(req, res) {
     const { id_plan } = req.params;
 
-    const plan = await Plans.findOne({
-      where: {
-        id: id_plan,
-        user_id: req.user_id,
-      },
-    });
+    const plan = await Plans.findByPk(id_plan);
 
     if (!plan) {
       return res.status(401).json({ error: 'Plan does not exist' });

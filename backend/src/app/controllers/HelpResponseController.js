@@ -39,7 +39,7 @@ class HelpResponseController {
       return res.status(400).json({ error: 'Validation fields' });
     }
 
-    const helpOrder = await HelpOrder.findOne(req.id_help_order);
+    const helpOrder = await HelpOrder.findByPk(req.params.id_help_order);
 
     const helpOrderUpdated = await helpOrder.update({
       answer: req.body.answer,

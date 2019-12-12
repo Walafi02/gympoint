@@ -1,128 +1,41 @@
+const faker = require('faker');
+
 module.exports = {
   up: queryInterface => {
-    return queryInterface.bulkInsert('students', [
-      {
-        id: 1,
-        name: 'walafi',
-        email: 'walafi@gmail.com',
-        age: 10,
-        weight: 70,
-        height: 1.2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 2,
-        name: 'ana',
-        email: 'ana@gmail.com',
-        age: 24,
-        weight: 80,
-        height: 1.7,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 3,
-        name: 'Alan',
-        email: 'alan@gmail.com',
-        age: 45,
-        weight: 50,
-        height: 1.52,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 4,
-        name: 'Roberto',
-        email: 'roberto@gmail.com',
-        age: 15,
-        weight: 60,
-        height: 1.45,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 5,
-        name: 'Julio',
-        email: 'julio@gmail.com',
-        age: 19,
-        weight: 66,
-        height: 1.38,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 6,
-        name: 'Robson',
-        email: 'robson@gmail.com',
-        age: 20,
-        weight: 70,
-        height: 1.51,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 7,
-        name: 'Fernanda',
-        email: 'fernanda@gmail.com',
-        age: 30,
-        weight: 70,
-        height: 1.5,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 8,
-        name: 'Ju',
-        email: 'ju@gmail.com',
-        age: 55,
-        weight: 70,
-        height: 1.5,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 9,
-        name: 'Max',
-        email: 'max@gmail.com',
-        age: 30,
-        weight: 32,
-        height: 1.8,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 10,
-        name: 'Daniel',
-        email: 'daniel@gmail.com',
-        age: 35,
-        weight: 40,
-        height: 1.2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 11,
-        name: 'fê',
-        email: 'fê@gmail.com',
-        age: 90,
-        weight: 10,
-        height: 1.1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 12,
-        name: 'Rubens',
-        email: 'rubens@gmail.com',
-        age: 52,
-        weight: 70,
-        height: 1.59,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    ]);
-  },
+    let students = []; // eslint-disable-line
 
+    for (let i = 1; i <= 100; i++) {
+      const firstName = faker.name.firstName();
+      const lastName = faker.name.lastName();
+      const email = faker.internet.email(firstName, lastName);
+      const age = faker.random.number({
+        min: 10,
+        max: 50,
+      });
+      const weight = faker.random.number({
+        min: 50,
+        max: 150,
+      });
+
+      const height =
+        faker.random.number({
+          min: 100,
+          max: 220,
+        }) / 100;
+
+      students.push({
+        id: i,
+        name: `${firstName} ${lastName}`,
+        email,
+        age,
+        height,
+        weight,
+        created_at: new Date(),
+        updated_at: new Date(),
+      });
+    }
+
+    return queryInterface.bulkInsert('students', students);
+  },
   down: () => {},
 };
