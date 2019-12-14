@@ -2,6 +2,9 @@ import * as Yup from 'yup';
 import { Op } from 'sequelize';
 import Student from '../models/Student';
 
+import Queue from '../../lib/Queue';
+import WelcomeStudent from '../../jobs/WelcomeStudent';
+
 class StudentsController {
   async index(req, res) {
     const { id } = req.params;
@@ -52,6 +55,8 @@ class StudentsController {
     }
 
     const { id, name, email, age, height } = await Student.create(req.body);
+
+    await Queue.add(WelcomeStudent.key, { id, name, email });
 
     return res.json({ id, name, email, age, height });
   }

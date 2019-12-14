@@ -12,11 +12,11 @@ class ResponseMessage {
     const { helpOrder, studant } = data;
 
     await Mail.sendMail({
-      to: `${studant.nome} <${studant.email}>`,
+      to: `${studant.name} <${studant.email}>`,
       subject: 'Resposta',
       template: 'responseMessage',
       context: {
-        name: studant.nome,
+        name: studant.name,
         question: helpOrder.question,
         answer: helpOrder.answer,
       },

@@ -2,9 +2,10 @@ import Bee from 'bee-queue';
 
 import WelcomeStudent from '../jobs/WelcomeStudent';
 import ResponseMessage from '../jobs/ResponseMessage';
+import NewRegistration from '../jobs/NewRegistration';
 import configRedis from '../config/redis';
 
-const jobs = [WelcomeStudent, ResponseMessage];
+const jobs = [WelcomeStudent, ResponseMessage, NewRegistration];
 
 class Queue {
   constructor() {

@@ -5,7 +5,7 @@ import Student from '../models/Student';
 import Plans from '../models/Plans';
 
 import Queue from '../../lib/Queue';
-import WelcomeStudent from '../../jobs/WelcomeStudent';
+import NewRegistration from '../../jobs/NewRegistration';
 
 class RegistrationController {
   async index(req, res) {
@@ -84,7 +84,7 @@ class RegistrationController {
       start_date,
     });
 
-    await Queue.add(WelcomeStudent.key, { student, plans, registration });
+    await Queue.add(NewRegistration.key, { student, plans, registration });
 
     return res.json(registration);
   }

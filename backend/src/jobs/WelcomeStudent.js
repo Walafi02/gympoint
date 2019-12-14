@@ -1,6 +1,3 @@
-import { parseISO, format } from 'date-fns';
-import pt from 'date-fns/locale';
-
 import Mail from '../lib/mail';
 
 class WelcomeStudent {
@@ -9,23 +6,15 @@ class WelcomeStudent {
   }
 
   async handle({ data }) {
-    const { student, plans, registration } = data;
+    const { id, name, email } = data;
 
     await Mail.sendMail({
-      to: `${student.nome} <${student.email}>`,
+      to: `${name} <${email}>`,
       subject: 'Boas Vindas',
       template: 'welcomeStudent',
       context: {
-        name: student.nome,
-        plan: plans.title,
-        endDate: format(
-          parseISO(registration.end_date),
-          "'dia' dd 'de' MMMM', as' H:mm'h'",
-          {
-            locale: pt,
-          }
-        ),
-        price: registration.price,
+        id,
+        name,
       },
     });
   }
