@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon src/server",
     "queue": "nodemon src/queue.js",
-    "dev:debug": "nodemon --inspect src/server"
+    "dev:debug": "nodemon --inspect src/server",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
