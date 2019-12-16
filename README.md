@@ -15,6 +15,12 @@
   <a href="#-licença">Licença</a>
 </p>
 
+<br>
+
+<p align="center">
+  <img alt="Frontend" src=".github/gympoint.png" width="100%">
+</p>
+
 ## 🚀 Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
