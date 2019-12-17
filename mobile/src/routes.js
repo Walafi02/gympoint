@@ -18,7 +18,15 @@ export default (signedIn = false) =>
   createAppContainer(
     createSwitchNavigator(
       {
-        Sign: SignIn,
+        // configuração para fazer o splash screen desaparecer
+        Sign: createStackNavigator(
+          {
+            screen: SignIn,
+          },
+          {
+            headerMode: 'none',
+          }
+        ),
         App: createBottomTabNavigator(
           {
             Checkin: createStackNavigator(

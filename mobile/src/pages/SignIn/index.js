@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Alert, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 
-// import Button from '~/components/Button';
 import Input from '~/components/Input';
 
 import logo from '~/assets/logo.png';
@@ -17,15 +16,13 @@ export default function SignIn() {
 
   const dispatch = useDispatch();
   async function handleSubmit() {
-    dispatch(auth.signInSuccess(id));
-
     setLoading(true);
     try {
-      const {data} = await api.post('/session/students', {
+      await api.post('/session/students', {
         student_id: id,
       });
 
-      console.tron.log(data);
+      dispatch(auth.signInSuccess(id));
     } catch (error) {
       if (error) Alert.alert('Error', error.response.data.error);
     } finally {
