@@ -34,14 +34,16 @@ class HelpOrdersController {
       return res.status(400).json({ error: 'Validation fields' });
     }
 
-    const student = await Student.findByPk(req.params.id_student);
+    const { student_id } = req.params;
+
+    const student = await Student.findByPk(student_id);
 
     if (!student) {
       return res.status(400).json({ error: 'Student not found' });
     }
 
     const helpOrder = await HelpOrder.create({
-      student_id: req.params.id_student,
+      student_id,
       question: req.body.question,
     });
 

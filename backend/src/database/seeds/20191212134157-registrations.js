@@ -43,7 +43,6 @@ module.exports = {
       const end_date = addMonths(start_date, duration);
 
       registrations.push({
-        id: i,
         user_id: 1,
         student_id,
         plan_id,

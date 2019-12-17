@@ -15,7 +15,6 @@ module.exports = {
       const answer_at = is_answer ? new Date() : null;
 
       help_orders.push({
-        id: i,
         student_id,
         question,
         created_at: new Date(),

@@ -31,7 +31,6 @@ export default function SignIn() {
           label="seu e-mail"
           name="email"
           type="email"
-          value="admin@gympoint.com"
           placeholder="exemplo@email.com"
         />
 
@@ -39,7 +38,6 @@ export default function SignIn() {
           label="sua senha"
           name="password"
           type="password"
-          value="123456"
           placeholder="********"
         />
 

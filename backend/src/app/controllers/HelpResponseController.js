@@ -24,7 +24,7 @@ class HelpResponseController {
       ],
       page,
       paginate,
-      order: [['createdAt', 'ASC']],
+      order: [['createdAt', 'DESC']],
     });
 
     return res.json(helpOrder);

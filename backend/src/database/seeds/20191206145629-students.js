@@ -24,7 +24,6 @@ module.exports = {
         }) / 100;
 
       students.push({
-        id: i,
         name: `${firstName} ${lastName}`,
         email,
         age,

@@ -4,6 +4,7 @@ export const Container = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
+  position: relative;
 
   svg {
     position: absolute;
