@@ -31,11 +31,11 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-A aplicação desenvolvida neste projeto é um app gerenciador de academia, o Gympoint. Esse app tem seu backend construído em node que fornece uma api que é consumida pelo aplicações web e mobile. 
+A aplicação desenvolvida neste projeto é um app gerenciador de academia, o Gympoint. Esse app tem seu backend construído em node que fornece uma api paaa ser consumida pelo aplicações web e mobile. 
 
-A aplicação Web por sua vez é voltada para a academia, onde funcionalidades, como: CRUDs de alunos, matrículas e planos foram implementados, além tela de ajuda aos alunos.
+A aplicação Web por sua vez é voltada para a gerência academia, onde funcionalidades, como: CRUDs de alunos, matrículas e planos foram implementados, além tela de ajuda aos alunos.
 
-Já aplicação mobile é direcionada aos alunos da academia, onde os mesmo poderão realizar check ins, efetuar, listar e visualizar seus pedidos de ajuda com suas respectivas respostas.
+Já aplicação mobile é direcionada aos alunos da academia, onde os mesmo poderão realizar check-ins, efetuar, listar e visualizar seus pedidos de ajuda com suas respectivas respostas.
 
 ## 🚀 Instalação e execução
 
@@ -58,23 +58,23 @@ Faça um clone desse repositório
     # exit
   ```
   3. Crie um arquivo `.env` a partir do arquivo `.env.example` preenchendo todas as variáveis pedidas;
-  4. Rode `npm install` para instalar as dependências;
+  4. Rode `npm install` para instalar todas as dependências;
   5. Rode `npx sequelize db:migrate` para criar as migrations;
-  6. Rode `npx sequelize db:seed:all` para popular o banco de dados;
+  6. Rode `npx sequelize db:seed:all` para popular o banco;
   7. Rode `npm run queue` para iniciar o consumo das filas;
-  8. Rode `npm run start` em um novo terminal para iniciar o servidor node;
+  8. Rode `npm run build && npm run start` em um novo terminal para compilar e iniciar o servidor node;
 
   ### Frontend
   1. A partir da raiz do projeto, entre na pasta rodando `cd frontend`;
-  2. Rode `yarn` para instalar as dependências;
-  3. Rode `yarn start` para iniciar o servidor de desenvolvimento;
+  2. Rode `npm install` para instalar as dependências;
+  3. Rode `npm run start` para iniciar o servidor de desenvolvimento;
   4. Abra `http://localhost:3000` para ver o projeto no navegador.
 
   ### Mobile
   1. A partir da raiz do projeto, entre na pasta rodando `cd mobile`;
-  2. Rode `yarn` para instalar as dependências;
-  3. Rode `yarn start` para iniciar o servidor de desenvolvimento;
-  3. Rode `yarn android` para iniciar a instalação no smartphone;
+  2. Rode `npm install` para instalar as dependências;
+  3. Rode `npm run start` para iniciar o servidor de desenvolvimento;
+  3. Rode `npm run android` para iniciar a instalação no smartphone;
 
 ## 📝 Licença
 
