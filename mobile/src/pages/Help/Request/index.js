@@ -30,6 +30,7 @@ export default function Request({navigation}) {
       setLoading(false);
     }
   }
+
   return (
     <Background>
       <Container>
@@ -60,6 +61,7 @@ Request.navigationOptions = ({navigation}) => ({
       <Icon name="chevron-left" size={24} color="#000000" />
     </TouchableOpacity>
   ),
+  tabBarVisible: false,
 });
 
 Request.propTypes = {

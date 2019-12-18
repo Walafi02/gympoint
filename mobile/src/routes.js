@@ -18,15 +18,7 @@ export default (signedIn = false) =>
   createAppContainer(
     createSwitchNavigator(
       {
-        // configuração para fazer o splash screen desaparecer
-        Sign: createStackNavigator(
-          {
-            screen: SignIn,
-          },
-          {
-            headerMode: 'none',
-          }
-        ),
+        Sign: SignIn,
         App: createBottomTabNavigator(
           {
             Checkin: createStackNavigator(
@@ -42,7 +34,6 @@ export default (signedIn = false) =>
                 },
                 defaultNavigationOptions: {
                   headerTitle: () => <Header />,
-                  // headerTitle: 'gympoint',
                 },
               }
             ),
