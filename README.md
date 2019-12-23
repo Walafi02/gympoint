@@ -21,7 +21,7 @@
   <img alt="Frontend" src=".github/gympoint.png" width="100%">
 </p>
 
-## ⭐️ Tecnologias
+## 🚀 Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
