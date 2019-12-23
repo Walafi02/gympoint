@@ -154,10 +154,10 @@ export default function Registration() {
       </Table>
 
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
+        cPage={currentPage}
+        tPages={totalPages}
         loading={loading}
-        loadItens={loadRegistrations}
+        handlePageChange={loadRegistrations}
       />
     </Container>
   );

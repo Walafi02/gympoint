@@ -3,16 +3,24 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 12px;
 
   button {
-    background: transparent;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 8px;
+    margin: 2px;
+    color: #ee4d64;
+    font-family: Roboto-Bold sans-serif;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 6px 12px;
+    transition: opacity 0.1s;
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 
   button:disabled {
@@ -20,17 +28,7 @@ export const Container = styled.div`
     opacity: 0.6;
   }
 
-  button:hover {
-    opacity: 0.8;
-  }
-
-  button > svg {
-    font-size: 30px;
-    color: #ee4d64;
-  }
-
-  strong {
-    font-size: 20px;
-    color: #ee4d64;
+  button.active {
+    color: #fff;
   }
 `;

@@ -112,10 +112,10 @@ export default function Help() {
       </Table>
 
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
+        cPage={currentPage}
+        tPages={totalPages}
         loading={loading}
-        loadItens={loadingHelp}
+        handlePageChange={loadingHelp}
       />
     </Container>
   );

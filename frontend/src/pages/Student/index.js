@@ -129,10 +129,10 @@ export default function Student() {
       </Table>
 
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
+        cPage={currentPage}
         loading={loading}
-        loadItens={loadStudent}
+        handlePageChange={loadStudent}
+        tPages={totalPages}
       />
     </Container>
   );
