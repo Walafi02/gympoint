@@ -21,7 +21,7 @@
   <img alt="Frontend" src=".github/gympoint.png" width="100%">
 </p>
 
-## 🚀 Tecnologias
+## ⭐️ Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
@@ -37,7 +37,7 @@ A aplicação Web por sua vez é voltada para a gerência academia, onde funcion
 
 Já aplicação mobile é direcionada aos alunos da academia, onde os mesmo poderão realizar check-ins, efetuar, listar e visualizar seus pedidos de ajuda com suas respectivas respostas.
 
-## 🚀 Instalação e execução
+## 📥 Instalação e execução
 
 Faça um clone desse repositório
 
