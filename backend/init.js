@@ -24,7 +24,7 @@ async function askParams(answers = {}) {
       name: 'APP_SECRET',
       default: answers.APP_SECRET,
       message: 'Value ENV APP_SECRET',
-      validate: i => (i.length >= 32 ? true : 'Pelo menos 32 letras'),
+      validate: i => (i.length > 0 ? true : 'O Campo é Obrigatório!'),
     },
     {
       name: 'MAIL_USER',
