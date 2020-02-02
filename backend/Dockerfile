@@ -11,9 +11,7 @@ USER node
 RUN yarn
 
 COPY --chown=node:node . .
-COPY ./script.sh /docker-entrypoint.sh
 
-EXPOSE 3003
+EXPOSE 3333
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
-
+CMD ["yarn", "dev"]

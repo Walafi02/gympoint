@@ -1,46 +1,73 @@
 version: '3'
 
 services:
-  backend:
+  gympoint-nodejs:
+    container_name: gympoint-nodejs
     build: .
-    container_name: backend
-    depends_on:
-      - postgres-gympoint
-      - redis-gympoint
-    env_file:
-      - .env
+    entrypoint: ['./init.sh']
     volumes:
       - .:/home/node/api
       - /home/node/api/node_modules
+    depends_on:
+      - gympoint-postgres
+      - gympoint-job
+      - gympoint-mongo
+    networks:
+      - app-connect
     ports:
       - '3333:3333'
-    networks:
-      - gympoint-network
 
-  postgres-gympoint:
+  gympoint-postgres:
+    container_name: gympoint-postgres
     image: postgres:11
-    container_name: postgres-gympoint
-    environment:
-      - POSTGRES_DB=gympoint
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=docker
     volumes:
-      - ./.data/postgresql:/var/lib/postgresql/data
+      - gympoint-postgres-data:/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     networks:
-      - gympoint-network
+      - app-connect
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
-  redis-gympoint:
-    image: redis:latest
-    container_name: redis-gympoint
+  gympoint-job:
+    container_name: gympoint-job
+    build: .
+    environment:
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+    command: yarn queue
+    depends_on:
+      - gympoint-redis
     networks:
-      - gympoint-network
+      - app-connect
+
+  gympoint-redis:
+    container_name: gympoint-redis
+    image: redis:latest
+    volumes:
+      - gympoint-redis-data:/data
+    networks:
+      - app-connect
     ports:
       - "6379:6379"
+
+  gympoint-mongo:
+    container_name: gympoint-mongo
+    image: mongo
     volumes:
-      - ./.data/redis:/data
+      - gympoint-mongo-data:/data
+    networks:
+      - app-connect
+
+volumes:
+  gympoint-postgres-data:
+  gympoint-redis-data:
+  gympoint-mongo-data:
 
 networks:
-  gympoint-network:
-    driver: bridge
+  app-connect:
+      driver: bridge
