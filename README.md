@@ -43,27 +43,9 @@ Faça um clone desse repositório
 
   ### Backend
   1. A partir da raiz do projeto, entre na pasta rodando `cd backend`;
-  2. Inicie os bancos de dados postgresql, mongodb e redis utilizando docker, e crie o banco `gympoint` no postgres:
-  ```bash
-    $ docker run --name postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres:11
-    $ docker run --name mongo -p 27017:27017 -d -t mongo
-    $ docker run --name redis -p 6379:6379 -d -t redis:alpine
-    $
-    $ docker exec -it postgres /bin/sh
-    # su postgres
-    /$ psql
-    postgres=# CREATE DATABASE gympoint;
-    postgres=# exit
-    /$ exit
-    # exit
-  ```
-  3. Crie um arquivo `.env` a partir do arquivo `.env.example` preenchendo todas as variáveis pedidas;
-  4. Rode `npm install` para instalar todas as dependências;
-  5. Rode `npx sequelize db:migrate` para criar as migrations;
-  6. Rode `npx sequelize db:seed:all` para popular o banco;
-  7. Rode `npm run queue` para iniciar o consumo das filas;
-  8. Rode `npm run build && npm run start` em um novo terminal para compilar e iniciar o servidor node;
-
+  2. Execulte `node ./init.js` para preencher as variáveis de ambiente;
+  3. Execulte `docker-compose up` para iniciar o servidor backend com todos os bancos de bados;
+  
   ### Frontend
   1. A partir da raiz do projeto, entre na pasta rodando `cd frontend`;
   2. Rode `npm install` para instalar as dependências;
