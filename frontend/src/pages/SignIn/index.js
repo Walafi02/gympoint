@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 
@@ -15,8 +15,13 @@ const schema = Yup.object().shape({
   password: Yup.string().required('A Senha é obrigatoria'),
 });
 
+
 export default function SignIn() {
   const dispatch = useDispatch();
+    const [auth, setAuth] = useState({
+      email: 'admin@gympoint.com',
+      password: '123456'
+    });
 
   async function handleSubmit({ email, password }) {
     dispatch(signInRequest(email, password));
@@ -26,7 +31,7 @@ export default function SignIn() {
     <>
       <img src={logo} alt="gympoint" />
 
-      <Form schema={schema} onSubmit={handleSubmit}>
+      <Form schema={schema} onSubmit={handleSubmit} initialData={auth}>
         <Input
           label="seu e-mail"
           name="email"
